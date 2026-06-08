@@ -1,19 +1,18 @@
 /**
- * One-time migration: rewrite gallery imageUrl fields that still point at
- * localhost or 127.0.0.1 so they use BACKEND_URL instead.
+ * Rewrite gallery imageUrl fields that still point at localhost/127.0.0.1.
  *
- * Usage (from backend/):
+ * Usage (from server/):
  *   npm run migrate:gallery-urls
  */
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import path from 'path';
 import { fileURLToPath } from 'url';
+import path from 'path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGO_URI = process.env.MONGO_URI;
 const BACKEND_URL = (process.env.BACKEND_URL || 'https://tpo-website-631h.onrender.com').replace(
   /\/+$/,
   ''
@@ -50,12 +49,12 @@ const gallerySchema = new mongoose.Schema(
 const Gallery = mongoose.model('Gallery', gallerySchema);
 
 async function migrate() {
-  if (!MONGODB_URI) {
-    console.error('MONGODB_URI is not set in backend/.env');
+  if (!MONGO_URI) {
+    console.error('MONGO_URI is not set in server/.env');
     process.exit(1);
   }
 
-  await mongoose.connect(MONGODB_URI);
+  await mongoose.connect(MONGO_URI);
   console.log('Connected to MongoDB');
   console.log(`Target BACKEND_URL: ${BACKEND_URL}`);
 

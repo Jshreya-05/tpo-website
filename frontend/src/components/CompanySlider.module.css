@@ -1,0 +1,183 @@
+.section {
+  position: relative;
+  background: var(--white);
+  padding: 6rem 0;
+  overflow: hidden;
+}
+
+/* Subtle gradient background glow */
+.section::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% -20%, rgba(27,79,216,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+  padding: 0 2rem;
+  position: relative; z-index: 2;
+}
+
+.sectionTitle {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700; color: var(--navy);
+  margin-top: 0.5rem; margin-bottom: 2rem;
+  letter-spacing: -0.01em;
+}
+
+/* Premium Title Badge */
+.badgeWrap {
+  display: flex; justify-content: center; width: 100%; margin-bottom: 1rem;
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(200, 151, 58, 0.06); 
+  border: 1px solid rgba(200, 151, 58, 0.25);
+  padding: 8px 24px; border-radius: 100px;
+  font-family: var(--font-head); font-size: 11.5px; font-weight: 700;
+  color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(200, 151, 58, 0.05); /* subtle glow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.badge:hover {
+  transform: translateY(-2px);
+  background: rgba(200, 151, 58, 0.12);
+  box-shadow: 0 6px 20px rgba(200, 151, 58, 0.12);
+  border-color: rgba(200, 151, 58, 0.4);
+}
+
+.badgeLine {
+  width: 24px; height: 2px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+  border-radius: 2px;
+}
+
+/* Premium Stats Row */
+.statsRow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: 1.25rem 3rem;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+  border-radius: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.statItem {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+
+.statItem strong {
+  font-family: var(--font-head);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 700; color: var(--gold);
+}
+
+.statItem span {
+  font-size: clamp(0.75rem, 1vw, 0.85rem);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.divider {
+  width: 1px; height: 36px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Auto-Scrolling Slider Wrap */
+.sliderWrap {
+  position: relative; z-index: 2;
+  overflow: hidden;
+}
+
+/* Fade Edges for smooth loop entering */
+.sliderWrap::before,
+.sliderWrap::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; width: 15vw; z-index: 3;
+  pointer-events: none;
+}
+
+.sliderWrap::before {
+  left: 0; background: linear-gradient(to right, var(--white), transparent);
+}
+
+.sliderWrap::after {
+  right: 0; background: linear-gradient(to left, var(--white), transparent);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: slide 35s linear infinite;
+  padding: 1rem 0;
+}
+
+.track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.logoItem {
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+
+/* Dynamic Glassmorphic Logo Cards */
+.logoInner {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  border-radius: 16px;
+  padding: 18px 36px;
+  font-family: var(--font-head);
+  font-weight: 600; font-size: clamp(15px, 1.5vw, 17px);
+  color: var(--navy);
+  letter-spacing: 0;
+  white-space: nowrap;
+  min-width: 160px; text-align: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+  cursor: default;
+}
+
+.logoItem:hover .logoInner {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.06), 0 0 20px rgba(27,79,216,0.05);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(27,79,216,0.15);
+  color: var(--blue);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .header { margin-bottom: 2.5rem; }
+  .statsRow {
+    flex-direction: column;
+    padding: 1.5rem 3rem;
+    gap: 1.25rem;
+    width: auto;
+  }
+  .divider {
+    width: 60px; height: 1px;
+  }
+  .sliderWrap::before,
+  .sliderWrap::after {
+    width: 10vw;
+  }
+}

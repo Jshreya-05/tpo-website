@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KBP Engineering College — Training & Placement Cell Portal
 
-## Getting Started
+Full-stack web portal for the Training & Placement Cell of KBP Engineering College, Satara.
 
-First, run the development server:
+| Layer | Directory | Stack |
+|-------|-----------|-------|
+| Frontend | `frontend/` | React, TypeScript, Vite |
+| Backend | `backend/` | Express, MongoDB, JWT auth |
+
+## Features
+
+- Public portal: programs, activities gallery, placements, contact
+- Admin dashboard: analytics, activity CRUD, gallery management
+- Authentication with role-based access
+- MongoDB Atlas integration with local file uploads
+
+## Quick start
+
+### Prerequisites
+
+- Node.js 18+
+- MongoDB Atlas connection string (or local MongoDB)
+
+### 1. Install dependencies
+
+```bash
+npm run install:all
+```
+
+Or install each project separately:
+
+```bash
+cd backend && npm install
+cd ../frontend && npm install
+```
+
+### 2. Configure environment
+
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+Edit `backend/.env` — set `MONGO_URI` and `JWT_SECRET`.
+
+### 3. Seed admin user (first time)
+
+```bash
+cd backend
+npm run seed:admin
+```
+
+Default credentials: `admin@kbp.edu` / `admin123`
+
+### 4. Run locally
+
+From the repo root:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Or run each service separately:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev:backend   # http://localhost:5000
+npm run dev:frontend  # http://localhost:5173
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Public site: http://localhost:5173
+- Admin login: http://localhost:5173/admin/login
+- API health: http://localhost:5000/api/health
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+tpo-website/
+├── frontend/          # Vite React app
+│   ├── src/
+│   ├── public/
+│   └── package.json
+├── backend/           # Express API
+│   ├── config/
+│   ├── controllers/
+│   ├── routes/
+│   ├── models/
+│   ├── uploads/
+│   └── server.js
+├── README.md
+├── DEPLOYMENT.md
+└── package.json       # Root workspace scripts
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for Render (backend) and Vercel (frontend) setup.
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private — KBP Engineering College.

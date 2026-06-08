@@ -1,0 +1,31 @@
+<svg width="900" height="1100" viewBox="0 0 900 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="900" y2="1100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0E2A5E"/>
+      <stop offset="1" stop-color="#071631"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="157" y1="180" x2="764" y2="962" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E6C779" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#B5862B" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1100" fill="url(#bg)"/>
+  <rect x="70" y="72" width="760" height="956" rx="36" fill="url(#accent)" stroke="#D1A854" stroke-opacity="0.48" stroke-width="2"/>
+  <rect x="130" y="134" width="640" height="832" rx="28" fill="#0B2148" fill-opacity="0.92" stroke="#D1A854" stroke-opacity="0.28"/>
+  <ellipse cx="449.5" cy="402" rx="145.5" ry="162" fill="#DDBA72"/>
+  <path d="M308 406C308 320.963 371.634 252 450 252C528.366 252 592 320.963 592 406V428H308V406Z" fill="#162A47"/>
+  <path d="M338 455C338 390.108 387.556 337.5 449 337.5C510.444 337.5 560 390.108 560 455V479H338V455Z" fill="#E8C989"/>
+  <path d="M250 898C250 765.451 339.451 658 450 658C560.549 658 650 765.451 650 898V919H250V898Z" fill="#1B3561"/>
+  <path d="M301 899C301 799.563 367.889 719 450 719C532.111 719 599 799.563 599 899V923H301V899Z" fill="#F7F2E4"/>
+  <path d="M374 696L450 810L526 696H374Z" fill="#0E213E"/>
+  <rect x="379" y="628" width="142" height="72" rx="16" fill="#DDBA72"/>
+  <path d="M412 804H487V922H412V804Z" fill="#E8C989"/>
+  <circle cx="450" cy="472" r="12" fill="#172744"/>
+  <ellipse cx="391" cy="401" rx="16" ry="12" fill="#172744"/>
+  <ellipse cx="510" cy="401" rx="16" ry="12" fill="#172744"/>
+  <path d="M401 543C414.577 563.521 430.992 574 451 574C471.008 574 487.423 563.521 501 543" stroke="#172744" stroke-width="8" stroke-linecap="round"/>
+  <rect x="172" y="950" width="556" height="44" rx="14" fill="#D1A854" fill-opacity="0.2"/>
+  <text x="450" y="978" fill="#F4D992" font-size="22" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" letter-spacing="2">
+    TRAINING AND PLACEMENT OFFICER
+  </text>
+</svg>

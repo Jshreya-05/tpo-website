@@ -1,37 +1,17 @@
 {
   "name": "tpo-website",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "KBP Engineering College — Training & Placement Cell full-stack portal",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "@radix-ui/react-icons": "^1.3.2",
-    "clsx": "^2.1.1",
-    "framer-motion": "^12.40.0",
-    "lucide-react": "^0.574.0",
-    "motion": "^12.40.0",
-    "next": "16.1.6",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "react-slick": "^0.31.0",
-    "recharts": "^3.8.1",
-    "slick-carousel": "^1.8.1",
-    "tailwind-merge": "^3.5.0",
-    "tailwindcss-animate": "^1.0.7"
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "build": "npm run build --prefix frontend",
+    "start:backend": "npm start --prefix backend",
+    "install:all": "npm install --prefix frontend && npm install --prefix backend"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@types/react-slick": "^0.23.13",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "concurrently": "^9.1.2"
   }
 }

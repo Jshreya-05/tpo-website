@@ -1,0 +1,140 @@
+.section {
+  background: var(--navy);
+  padding: 6rem 2rem;
+}
+
+.inner {
+  max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: start;
+}
+
+/* Info list */
+.infoList {
+  margin-top: 2.5rem;
+  display: flex; flex-direction: column; gap: 18px;
+}
+
+.infoItem {
+  display: flex; align-items: flex-start; gap: 14px;
+}
+
+.infoIcon {
+  width: 42px; height: 42px; border-radius: 10px;
+  background: rgba(200, 151, 58, 0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+
+.infoItem h5 {
+  font-size: 12px; color: rgba(255,255,255,0.45);
+  font-weight: 400; margin-bottom: 3px;
+}
+
+.infoItem p {
+  font-size: 14.5px; color: rgba(255,255,255,0.82); font-weight: 400;
+  line-height: 1.5;
+}
+
+.infoItem p + p {
+  margin-top: 4px;
+}
+
+.infoLink {
+  color: var(--gold-light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.infoLink:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+/* Form card */
+.formCard {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius-lg); padding: 32px;
+  backdrop-filter: blur(10px);
+}
+
+.formTitle {
+  font-family: var(--font-head); font-weight: 700; font-size: 20px;
+  color: var(--white); margin-bottom: 22px;
+}
+
+/* Fields */
+.row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; margin-bottom: 0;
+}
+
+.field {
+  display: flex; flex-direction: column; margin-bottom: 16px;
+}
+
+.field label {
+  font-size: 13px; font-weight: 500;
+  color: rgba(255,255,255,0.6); margin-bottom: 7px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  padding: 10px 13px;
+  font-size: 14px; color: var(--white);
+  font-family: var(--font-body);
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+}
+
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(255,255,255,0.28); }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: rgba(200,151,58,0.5);
+  background: rgba(255,255,255,0.10);
+}
+
+.field select option { background: var(--navy); color: var(--white); }
+.field textarea { resize: vertical; min-height: 90px; }
+
+/* Submit */
+.submitBtn {
+  width: 100%; padding: 13px 24px;
+  background: var(--gold); color: var(--navy);
+  font-family: var(--font-body); font-weight: 600; font-size: 15px;
+  border: none; border-radius: var(--radius-sm); cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(200,151,58,0.3);
+  margin-top: 4px;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(200,151,58,0.4);
+}
+
+.submitBtn.submitted {
+  background: #16A34A;
+  box-shadow: 0 4px 14px rgba(22,163,74,0.35);
+  cursor: default;
+}
+
+@media (max-width: 1024px) {
+  .inner { grid-template-columns: 1fr; gap: 3rem; }
+}
+
+@media (max-width: 640px) {
+  .section { padding: 4rem 1.25rem; }
+  .formCard { padding: 22px; }
+  .row { grid-template-columns: 1fr; }
+}

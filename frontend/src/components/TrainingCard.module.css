@@ -1,0 +1,80 @@
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(200, 151, 58, 0.3);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* Image area */
+.imageWrap { height: 180px; overflow: hidden; flex-shrink: 0; }
+
+.imagePlaceholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.imageIcon {
+  color: rgba(255, 255, 255, 0.92);
+  opacity: 0.95;
+}
+
+/* Body */
+.body {
+  padding: 20px 22px 22px;
+  display: flex; flex-direction: column; flex: 1;
+}
+
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 100px;
+  margin-bottom: 10px; align-self: flex-start;
+}
+
+.title {
+  font-family: var(--font-head); font-size: 17px; font-weight: 700;
+  color: var(--navy); margin-bottom: 8px; line-height: 1.3;
+}
+
+.desc {
+  font-size: 13.5px; color: var(--text-muted);
+  line-height: 1.6; margin-bottom: 16px; flex: 1;
+}
+
+/* Meta row */
+.meta {
+  display: flex; gap: 14px; align-items: center;
+  padding-top: 14px; border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12.5px; color: var(--text-muted);
+}
+
+.cta {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--blue);
+  margin-left: auto;
+  transition: gap 0.2s;
+}
+
+.card:hover .cta { gap: 10px; }

@@ -1,0 +1,215 @@
+.aboutPage {
+  background: linear-gradient(180deg, #061735 0%, #081126 40%, #060d1e 100%);
+  color: var(--white);
+  min-height: 100vh;
+  padding-top: 80px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.bgGlow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(212, 167, 74, 0.15) 0%, transparent 35%),
+    radial-gradient(circle at 88% 78%, rgba(43, 107, 255, 0.12) 0%, transparent 38%);
+}
+
+.section {
+  padding: 72px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: 36px;
+}
+
+.aboutContent {
+  background: linear-gradient(165deg, rgba(12, 30, 63, 0.92), rgba(7, 18, 39, 0.9));
+  border: 1px solid rgba(212, 167, 74, 0.24);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 18px 56px rgba(4, 10, 20, 0.52);
+  padding: 44px;
+}
+
+.sectionLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  color: #f4d289;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.mainTitle {
+  font-family: var(--font-head);
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
+  line-height: 1.18;
+  margin-bottom: 20px;
+  color: #fff8e5;
+}
+
+.tpoName {
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  color: #f2cd7a;
+  margin-bottom: 4px;
+}
+
+.tpoMeta {
+  margin: 0 0 4px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.98rem;
+}
+
+.aboutContent > p {
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.ctaButton {
+  margin-top: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 13px 26px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #061735;
+  background: linear-gradient(100deg, #e4bb62, #f4d992);
+  box-shadow: 0 10px 24px rgba(212, 167, 74, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.ctaButton:hover {
+  filter: brightness(1.02);
+  box-shadow: 0 12px 28px rgba(212, 167, 74, 0.45);
+}
+
+.portraitCard {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid rgba(212, 167, 74, 0.3);
+  background: linear-gradient(160deg, rgba(13, 35, 74, 0.88), rgba(6, 19, 40, 0.94));
+  box-shadow: 0 18px 58px rgba(4, 9, 17, 0.55);
+}
+
+.portraitImage {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  min-height: 480px;
+}
+
+.cardsSection {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.infoCard {
+  padding: 30px 24px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(170deg, rgba(12, 30, 63, 0.87), rgba(8, 21, 43, 0.9));
+  border: 1px solid rgba(212, 167, 74, 0.2);
+  box-shadow: 0 14px 30px rgba(4, 10, 20, 0.4);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.infoCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(234, 192, 106, 0.55);
+  box-shadow: 0 20px 34px rgba(4, 10, 20, 0.5);
+}
+
+.infoCard h3 {
+  margin: 0 0 12px;
+  color: #f2cd7a;
+  font-size: 1.24rem;
+}
+
+.infoCard p {
+  margin: 0;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.98rem;
+}
+
+.compactFooter {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(212, 167, 74, 0.24);
+  background: rgba(4, 11, 26, 0.8);
+}
+
+.footerInner {
+  display: flex;
+  justify-content: space-between;
+  gap: 26px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+}
+
+.footerInner h4 {
+  margin: 0 0 6px;
+  color: #f1cd7d;
+  font-size: 1.05rem;
+}
+
+.footerInner p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
+  font-size: 0.93rem;
+}
+
+.footerDetails a {
+  color: #f4d992;
+  text-decoration: none;
+}
+
+.footerDetails a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1080px) {
+  .aboutGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .portraitImage {
+    min-height: 360px;
+  }
+
+  .cardsSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 56px 0;
+  }
+
+  .aboutContent {
+    padding: 30px 22px;
+  }
+
+  .footerInner {
+    flex-direction: column;
+    gap: 14px;
+  }
+}

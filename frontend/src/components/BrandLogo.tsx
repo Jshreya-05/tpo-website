@@ -1,0 +1,28 @@
+import styles from './BrandLogo.module.css'
+
+interface BrandLogoProps {
+  size?: number
+  showText?: boolean
+  variant?: 'dark' | 'light'
+}
+
+export default function BrandLogo({ size = 44, showText = true, variant = 'dark' }: BrandLogoProps) {
+  return (
+    <div className={`${styles.brand} ${variant === 'light' ? styles.light : ''}`}>
+      <img
+        src="/sp-logo.png"
+        alt="Sanjeev Patil"
+        className={styles.logoImage}
+        width={size}
+        height={size}
+        loading="eager"
+      />
+      {showText && (
+        <div className={styles.logoText}>
+          <strong>Sanjeev Patil</strong>
+          <span>Training &amp; Placement Officer</span>
+        </div>
+      )}
+    </div>
+  )
+}
