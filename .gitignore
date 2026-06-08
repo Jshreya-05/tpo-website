@@ -43,9 +43,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Uploads (keep structure, ignore user content)
+# Uploads (gallery images committed for Render deployment)
 backend/uploads/*
 !backend/uploads/.gitkeep
+!backend/uploads/gallery/
+!backend/uploads/gallery/**
 
 # Local archive of pre-migration code (delete before first push if desired)
 _archive/
