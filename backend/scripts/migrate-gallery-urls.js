@@ -1,8 +1,8 @@
 /**
- * Rewrite gallery imageUrl fields that still point at localhost/127.0.0.1.
+ * Rewrite gallery imageUrl fields that point at localhost / 127.0.0.1 (any port).
  *
- * Usage (from server/):
- *   npm run migrate:gallery-urls
+ * Usage (from backend/):
+ *   BACKEND_URL=https://tpo-website-631h.onrender.com npm run migrate:gallery-urls
  */
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -12,13 +12,13 @@ import path from 'path';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-const MONGO_URI = process.env.MONGO_URI;
-const BACKEND_URL = (process.env.BACKEND_URL || 'https://tpo-website-631h.onrender.com').replace(
-  /\/+$/,
-  ''
-);
+const MONGO_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
+const BACKEND_URL = (
+  process.env.BACKEND_URL || 'https://tpo-website-631h.onrender.com'
+).replace(/\/+$/, '');
 
-const LOCALHOST_REGEX = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/i;
+const LOCALHOST_REGEX = /https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/i;
+const LOCALHOST_QUERY = /(localhost|127\.0\.0\.1)/i;
 
 function resolveImageUrl(imageUrl) {
   if (!imageUrl || !LOCALHOST_REGEX.test(imageUrl)) {
@@ -50,7 +50,7 @@ const Gallery = mongoose.model('Gallery', gallerySchema);
 
 async function migrate() {
   if (!MONGO_URI) {
-    console.error('MONGO_URI is not set in server/.env');
+    console.error('MONGO_URI is not set in backend/.env');
     process.exit(1);
   }
 
@@ -59,23 +59,39 @@ async function migrate() {
   console.log(`Target BACKEND_URL: ${BACKEND_URL}`);
 
   const items = await Gallery.find({
-    imageUrl: { $regex: LOCALHOST_REGEX },
+    imageUrl: { $regex: LOCALHOST_QUERY },
   });
 
   console.log(`Found ${items.length} gallery record(s) with localhost URLs`);
 
   let updated = 0;
+  let sampleBefore = null;
+  let sampleAfter = null;
+
   for (const item of items) {
-    const newUrl = resolveImageUrl(item.imageUrl);
-    if (newUrl !== item.imageUrl) {
-      console.log(`  ${item._id}: ${item.imageUrl} -> ${newUrl}`);
-      item.imageUrl = newUrl;
+    const before = item.imageUrl;
+    const after = resolveImageUrl(before);
+    if (after !== before) {
+      if (!sampleBefore) {
+        sampleBefore = { _id: item._id, imageUrl: before };
+      }
+      item.imageUrl = after;
       await item.save();
       updated += 1;
+      sampleAfter = { _id: item._id, imageUrl: after };
+      console.log(`  ${item._id}: ${before} -> ${after}`);
     }
   }
 
-  console.log(`Migration complete. Updated ${updated} record(s).`);
+  console.log('\n--- Migration summary ---');
+  console.log(`Documents updated: ${updated}`);
+  if (sampleBefore) {
+    console.log('Sample before:', JSON.stringify(sampleBefore, null, 2));
+    console.log('Sample after:', JSON.stringify(sampleAfter, null, 2));
+  } else {
+    console.log('No documents required updating.');
+  }
+
   await mongoose.disconnect();
 }
 

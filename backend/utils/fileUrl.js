@@ -6,9 +6,19 @@ const LOCALHOST_PATTERNS = [
   /^https?:\/\/127\.0\.0\.1(:\d+)?/i,
 ];
 
+function isLocalhostUrl(url) {
+  if (!url || typeof url !== 'string') return false;
+  return LOCALHOST_PATTERNS.some((pattern) => pattern.test(url));
+}
+
+/** Public base URL for API responses — never localhost in production. */
+export function getPublicBackendUrl() {
+  return env.backendUrl;
+}
+
 export function buildFileUrl(relativePath) {
   const normalized = relativePath.replace(/^\/+/, '').replace(/\\/g, '/');
-  return `${env.backendUrl}/uploads/${normalized}`;
+  return `${getPublicBackendUrl()}/uploads/${normalized}`;
 }
 
 export function filePathToRelative(filePath) {
@@ -30,19 +40,19 @@ export function resolveImageUrl(imageUrl) {
     return imageUrl;
   }
 
-  if (imageUrl.startsWith(env.backendUrl)) {
-    return imageUrl;
+  const publicBase = getPublicBackendUrl();
+
+  if (isLocalhostUrl(imageUrl)) {
+    const uploadsIndex = imageUrl.indexOf('/uploads/');
+    if (uploadsIndex !== -1) {
+      const relativePath = imageUrl.slice(uploadsIndex + '/uploads/'.length);
+      return `${publicBase}/uploads/${relativePath}`;
+    }
+    return imageUrl.replace(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/i, publicBase);
   }
 
-  for (const pattern of LOCALHOST_PATTERNS) {
-    if (pattern.test(imageUrl)) {
-      const uploadsIndex = imageUrl.indexOf('/uploads/');
-      if (uploadsIndex !== -1) {
-        const relativePath = imageUrl.slice(uploadsIndex + '/uploads/'.length);
-        return buildFileUrl(relativePath);
-      }
-      return imageUrl.replace(pattern, env.backendUrl);
-    }
+  if (imageUrl.startsWith(publicBase)) {
+    return imageUrl;
   }
 
   if (!/^https?:\/\//i.test(imageUrl) && imageUrl.includes('uploads')) {
