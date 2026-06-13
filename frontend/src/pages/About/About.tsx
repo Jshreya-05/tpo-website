@@ -4,7 +4,6 @@ import styles from './About.module.css'
 import Navbar from '../../components/Navbar'
 import BrandLogo from '../../components/BrandLogo'
 import { contactInfo } from '../../data'
-import tpoPortrait from '../../assets/tpo-portrait.svg'
 
 const cardData = [
   {
@@ -77,7 +76,7 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.15 }}
             >
               <img
-                src={tpoPortrait}
+                src="/sp-logo.png"
                 alt="Prof. Sanjeev V. Patil, Training and Placement Officer"
                 className={styles.portraitImage}
               />

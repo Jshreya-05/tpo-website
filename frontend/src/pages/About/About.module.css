@@ -111,6 +111,7 @@
   height: 100%;
   display: block;
   object-fit: cover;
+  object-position: center top;
   min-height: 480px;
 }
 
