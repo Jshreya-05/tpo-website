@@ -37,7 +37,7 @@ export default function PlacementTimeline() {
                 <div className={`${styles.content} ${isEven ? styles.contentRight : ''}`}>
                   <div className={styles.stepLabel}>{step.step}</div>
                   <h4>{step.icon} {step.title}</h4>
-                  <p>{step.desc}</p>
+                  <p className="text-justify">{step.desc}</p>
                 </div>
 
                 {/* Center node */}

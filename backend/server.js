@@ -7,6 +7,11 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import connectDB from './config/db.js';
 import activityRoutes from './routes/activityRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
+import settingRoutes from './routes/settingRoutes.js';
+import registrationRoutes from './routes/registrationRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
+import testimonialRoutes from './routes/testimonialRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import { notFound, errorHandler } from './middlewares/errorMiddleware.js';
 import { corsOptions } from './config/cors.js';
@@ -34,6 +39,11 @@ if (env.nodeEnv === 'development') {
 }
 
 app.use('/api/activities', activityRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/settings', settingRoutes);
+app.use('/api/registrations', registrationRoutes);
+app.use('/api/contacts', contactRoutes);
+app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/auth', authRoutes);
 

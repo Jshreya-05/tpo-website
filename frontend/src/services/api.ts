@@ -1,5 +1,9 @@
 import axios from 'axios';
 import type { ActivityResponse, SingleActivityResponse } from '../types/activities';
+import type { EventResponse, SingleEventResponse } from '../types/events';
+import type { WebsiteSettings, SettingsResponse } from '../types/settings';
+import type { RegistrationsResponse, ContactSubmissionsResponse } from '../types/registrations';
+import type { TestimonialsResponse, SingleTestimonialResponse } from '../types/testimonials';
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
@@ -122,6 +126,138 @@ export const deleteGalleryImage = async (id: string) => {
 
 export const fetchGalleryStats = async () => {
   const { data } = await apiClient.get('/gallery/stats');
+  return data;
+};
+
+export const fetchEvents = async (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+}): Promise<EventResponse> => {
+  const { data } = await apiClient.get<EventResponse>('/events', { params });
+  return data;
+};
+
+export const fetchEventById = async (id: string): Promise<SingleEventResponse> => {
+  const { data } = await apiClient.get<SingleEventResponse>(`/events/${id}`);
+  return data;
+};
+
+export const createEvent = async (formData: FormData) => {
+  const { data } = await apiClient.post('/events/admin', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
+};
+
+export const updateEvent = async (id: string, formData: FormData) => {
+  const { data } = await apiClient.put(`/events/admin/${id}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
+};
+
+export const deleteEvent = async (id: string) => {
+  const { data } = await apiClient.delete(`/events/admin/${id}`);
+  return data;
+};
+
+// ─── Settings API ───
+export const fetchSettings = async (): Promise<SettingsResponse> => {
+  const { data } = await apiClient.get<SettingsResponse>('/settings');
+  return data;
+};
+
+export const updateSettings = async (settingsData: Partial<WebsiteSettings>): Promise<SettingsResponse> => {
+  const { data } = await apiClient.put<SettingsResponse>('/settings/admin', settingsData);
+  return data;
+};
+
+// ─── Registrations API ───
+export const createRegistration = async (regData: {
+  name: string;
+  email: string;
+  phone: string;
+  branch: string;
+  year: string;
+}) => {
+  const { data } = await apiClient.post('/registrations', regData);
+  return data;
+};
+
+export const fetchRegistrations = async (params?: { page?: number; limit?: number; search?: string }): Promise<RegistrationsResponse> => {
+  const { data } = await apiClient.get<RegistrationsResponse>('/registrations/admin', { params });
+  return data;
+};
+
+export const deleteRegistration = async (id: string) => {
+  const { data } = await apiClient.delete(`/registrations/admin/${id}`);
+  return data;
+};
+
+// ─── Contacts API ───
+export const createContactSubmission = async (contactData: {
+  name: string;
+  email: string;
+  phone?: string;
+  role: string;
+  org?: string;
+  message?: string;
+}) => {
+  const { data } = await apiClient.post('/contacts', contactData);
+  return data;
+};
+
+export const fetchContactSubmissions = async (params?: { page?: number; limit?: number; search?: string }): Promise<ContactSubmissionsResponse> => {
+  const { data } = await apiClient.get<ContactSubmissionsResponse>('/contacts/admin', { params });
+  return data;
+};
+
+export const deleteContactSubmission = async (id: string) => {
+  const { data } = await apiClient.delete(`/contacts/admin/${id}`);
+  return data;
+};
+
+// ─── Testimonials API ───
+export const fetchTestimonials = async (): Promise<TestimonialsResponse> => {
+  const { data } = await apiClient.get<TestimonialsResponse>('/testimonials');
+  return data;
+};
+
+export const fetchTestimonialById = async (id: string): Promise<SingleTestimonialResponse> => {
+  const { data } = await apiClient.get<SingleTestimonialResponse>(`/testimonials/${id}`);
+  return data;
+};
+
+export const createTestimonial = async (testimonialData: {
+  name: string;
+  role: string;
+  company: string;
+  batch: string;
+  text: string;
+  initials: string;
+  pkg: string;
+}) => {
+  const { data } = await apiClient.post('/testimonials/admin', testimonialData);
+  return data;
+};
+
+export const updateTestimonial = async (id: string, testimonialData: Partial<{
+  name: string;
+  role: string;
+  company: string;
+  batch: string;
+  text: string;
+  initials: string;
+  pkg: string;
+}>) => {
+  const { data } = await apiClient.put(`/testimonials/admin/${id}`, testimonialData);
+  return data;
+};
+
+export const deleteTestimonial = async (id: string) => {
+  const { data } = await apiClient.delete(`/testimonials/admin/${id}`);
   return data;
 };
 

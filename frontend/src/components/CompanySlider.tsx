@@ -1,11 +1,17 @@
 import { companies } from '../data'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
+import { useCounter } from '../hooks/useCounter'
 import styles from './CompanySlider.module.css'
 
 export default function CompanySlider() {
   const [ref, isVisible] = useIntersectionObserver({ threshold: 0.1 })
   // Double the list for seamless infinite loop
   const doubled = [...companies, ...companies]
+
+  const mouCount = useCounter({ target: 300, duration: 2000, start: isVisible })
+  const companiesCount = useCounter({ target: 2100, duration: 2200, start: isVisible })
+  const placementsCount = useCounter({ target: 3000, duration: 2400, start: isVisible })
+  const highestPkgCount = useCounter({ target: 18, duration: 2600, start: isVisible })
 
   return (
     <section id="companies" className={styles.section}>
@@ -23,17 +29,22 @@ export default function CompanySlider() {
 
           <div className={`${styles.statsRow} fade-up stagger-1 ${isVisible ? 'visible' : ''}`}>
             <div className={styles.statItem}>
-              <strong>47+</strong>
+              <strong>{mouCount}</strong>
+              <span>MOU Signed</span>
+            </div>
+            <div className={styles.divider} />
+            <div className={styles.statItem}>
+              <strong>{companiesCount}+</strong>
               <span>Companies</span>
             </div>
             <div className={styles.divider} />
             <div className={styles.statItem}>
-              <strong>1200+</strong>
+              <strong>{placementsCount}+</strong>
               <span>Placements</span>
             </div>
             <div className={styles.divider} />
             <div className={styles.statItem}>
-              <strong>18 LPA</strong>
+              <strong>{highestPkgCount} LPA</strong>
               <span>Highest Package</span>
             </div>
           </div>

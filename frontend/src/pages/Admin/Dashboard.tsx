@@ -31,17 +31,20 @@ import {
   ResponsiveContainer,
   Cell
 } from 'recharts';
-import { fetchActivities, fetchGalleryStats, deleteActivity, fetchAdminAnalytics } from '../../services/api';
+import { fetchActivities, fetchGalleryStats, deleteActivity, fetchAdminAnalytics, fetchEvents, deleteEvent } from '../../services/api';
 import type { Activity } from '../../types/activities';
+import type { UpcomingEvent } from '../../types/events';
 import styles from './Dashboard.module.css';
 import toast from 'react-hot-toast';
 
 export default function Dashboard() {
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [events, setEvents] = useState<UpcomingEvent[]>([]);
+  const [activeTab, setActiveTab] = useState<'activities' | 'events'>('activities');
   const [galleryStats, setGalleryStats] = useState<any>(null);
   const [analytics, setAnalytics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [deleteTarget, setDeleteTarget] = useState<{ id: string, title: string } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string, title: string, type: 'activity' | 'event' } | null>(null);
   const navigate = useNavigate();
 
   // Filter States
@@ -51,13 +54,15 @@ export default function Dashboard() {
 
   const loadData = async () => {
     try {
-      const [activitiesRes, galleryRes, analyticsRes] = await Promise.all([
+      const [activitiesRes, eventsRes, galleryRes, analyticsRes] = await Promise.all([
         fetchActivities({ status: 'all', limit: 1000 }),
+        fetchEvents({ status: 'all', limit: 1000 }),
         fetchGalleryStats(),
         fetchAdminAnalytics()
       ]);
       // `fetchActivities` returns ActivityResponse; others return { success, data: ... }
       setActivities(activitiesRes.data || []);
+      setEvents(eventsRes.data || []);
       setGalleryStats(galleryRes.data || null);
       setAnalytics(analyticsRes.data || null);
     } catch {
@@ -72,8 +77,13 @@ export default function Dashboard() {
   const handleDeleteTarget = async () => {
     if (!deleteTarget) return;
     try {
-      await deleteActivity(deleteTarget.id);
-      toast.success('Activity records purged');
+      if (deleteTarget.type === 'activity') {
+        await deleteActivity(deleteTarget.id);
+        toast.success('Activity records purged');
+      } else {
+        await deleteEvent(deleteTarget.id);
+        toast.success('Event records purged');
+      }
       setDeleteTarget(null);
       loadData();
     } catch (err: any) {
@@ -88,6 +98,13 @@ export default function Dashboard() {
     const matchesStatus = statusFilter === 'all' || a.status === statusFilter;
     const matchesCategory = categoryFilter === 'all' || a.category === categoryFilter;
     return matchesSearch && matchesStatus && matchesCategory;
+  });
+
+  const filteredEvents = events.filter(e => {
+    const matchesSearch = e.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          (e.companyName && e.companyName.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesStatus = statusFilter === 'all' || e.status === statusFilter;
+    return matchesSearch && matchesStatus;
   });
 
   // Chart Data Preparation
@@ -111,9 +128,15 @@ export default function Dashboard() {
           <p className={styles.subtitle}>Institutional performance metrics and asset management.</p>
         </motion.div>
         <div style={{ display: 'flex', gap: '1rem' }}>
-           <button className={styles.actionBtn} style={{ background: 'var(--gold)', color: 'var(--navy)', padding: '0.6rem 1.2rem', borderRadius: '10px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }} onClick={() => navigate('/admin/create')}>
-             <Plus size={18} /> New Activity
-           </button>
+           {activeTab === 'activities' ? (
+             <button className={styles.actionBtn} style={{ background: 'var(--gold)', color: 'var(--navy)', padding: '0.6rem 1.2rem', borderRadius: '10px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }} onClick={() => navigate('/admin/create')}>
+               <Plus size={18} /> New Activity
+             </button>
+           ) : (
+             <button className={styles.actionBtn} style={{ background: 'var(--gold)', color: 'var(--navy)', padding: '0.6rem 1.2rem', borderRadius: '10px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }} onClick={() => navigate('/admin/events/create')}>
+               <Plus size={18} /> New Event
+             </button>
+           )}
         </div>
       </header>
 
@@ -345,21 +368,51 @@ export default function Dashboard() {
 
       {/* Enhanced Data Table */}
       <div className={styles.tableContainer}>
-        <div className={styles.tableHeader} style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ fontSize: '1.2rem' }}>Activity Ledger</h3>
+        <div className={styles.tableHeader} style={{ padding: '1.5rem 2rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+            <h3 
+              onClick={() => { setActiveTab('activities'); setSearchTerm(''); }}
+              style={{ fontSize: '1.25rem', cursor: 'pointer', borderBottom: activeTab === 'activities' ? '2px solid var(--gold)' : 'none', color: activeTab === 'activities' ? 'white' : 'rgba(255,255,255,0.4)', paddingBottom: '4px', fontWeight: 600 }}
+            >
+              Activity Ledger
+            </h3>
+            <h3 
+              onClick={() => { setActiveTab('events'); setSearchTerm(''); }}
+              style={{ fontSize: '1.25rem', cursor: 'pointer', borderBottom: activeTab === 'events' ? '2px solid var(--gold)' : 'none', color: activeTab === 'events' ? 'white' : 'rgba(255,255,255,0.4)', paddingBottom: '4px', fontWeight: 600 }}
+            >
+              Upcoming Events Ledger
+            </h3>
+          </div>
           
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
             <div style={{ position: 'relative' }}>
               <Search size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', opacity: 0.4 }} />
               <input 
                 type="text" 
-                placeholder="Search event or company..." 
+                placeholder={activeTab === 'activities' ? "Search event or company..." : "Search event title..."}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '0.5rem 1rem 0.5rem 2.5rem', color: 'white', width: '250px' }}
               />
             </div>
             
+            {activeTab === 'activities' && (
+              <div style={{ display: 'flex', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '4px', borderRadius: '10px' }}>
+                <select 
+                  value={categoryFilter} 
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                  style={{ background: 'transparent', border: 'none', color: 'white', padding: '2px 8px', outline: 'none', cursor: 'pointer', fontSize: '0.8rem' }}
+                >
+                  <option value="all">All Categories</option>
+                  <option value="Placement Drive">Placement Drive</option>
+                  <option value="Workshop">Workshop</option>
+                  <option value="Seminar">Seminar</option>
+                  <option value="Bootcamp">Bootcamp</option>
+                  <option value="Guest Lecture">Guest Lecture</option>
+                </select>
+              </div>
+            )}
+
             <div style={{ display: 'flex', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '4px', borderRadius: '10px' }}>
               {['all', 'published', 'draft'].map(s => (
                 <button 
@@ -388,61 +441,123 @@ export default function Dashboard() {
            <div className={styles.loader} style={{ padding: '4rem', textAlign: 'center', color: 'var(--gold)' }}>Syncing Server...</div>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Event Details</th>
-                  <th>Category</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredActivities.map((activity) => (
-                  <motion.tr 
-                    key={activity.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <td>
-                      <div className={styles.activityInfo}>
-                        <img 
-                          src={activity.images[0] || 'https://via.placeholder.com/80?text=No+Img'} 
-                          alt="" 
-                          className={styles.thumbnail}
-                        />
-                        <div className={styles.infoText}>
-                          <span className={styles.infoTitle}>{activity.title}</span>
-                          <span className={styles.infoDesc}>{activity.companyName || 'Campus Event'}</span>
+            {activeTab === 'activities' ? (
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Event Details</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredActivities.map((activity) => (
+                    <motion.tr 
+                      key={activity.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      <td>
+                        <div className={styles.activityInfo}>
+                          <img 
+                            src={activity.images[0] || 'https://via.placeholder.com/80?text=No+Img'} 
+                            alt="" 
+                            className={styles.thumbnail}
+                          />
+                          <div className={styles.infoText}>
+                            <span className={styles.infoTitle}>{activity.title}</span>
+                            <span className={styles.infoDesc}>{activity.companyName || 'Campus Event'}</span>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td>{activity.category}</td>
-                    <td>{new Date(activity.eventDate).toLocaleDateString()}</td>
-                    <td>
-                      <span className={`${styles.statusBadge} ${styles[activity.status]}`}>
-                        <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor' }} />
-                        {activity.status === 'published' ? 'Published' : activity.status === 'draft' ? 'Draft' : 'Archived'}
-                      </span>
-                    </td>
-                    <td>
-                      <div className={styles.actions}>
-                        <button className={styles.actionBtn} title="Edit Activity" onClick={() => navigate(`/admin/edit/${activity.id}`)}>
-                          <Edit size={16} />
-                        </button>
-                        <button className={`${styles.actionBtn} ${styles.delete}`} title="Delete" onClick={() => setDeleteTarget({ id: activity.id, title: activity.title })}>
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </td>
-                  </motion.tr>
-                ))}
-                {filteredActivities.length === 0 && (
-                  <tr><td colSpan={5} style={{ textAlign: 'center', padding: '3rem', color: 'rgba(255,255,255,0.3)' }}>No matching records.</td></tr>
-                )}
-              </tbody>
-            </table>
+                      </td>
+                      <td>{activity.category}</td>
+                      <td>{new Date(activity.eventDate).toLocaleDateString()}</td>
+                      <td>
+                        <span className={`${styles.statusBadge} ${styles[activity.status]}`}>
+                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor' }} />
+                          {activity.status === 'published' ? 'Published' : activity.status === 'draft' ? 'Draft' : 'Archived'}
+                        </span>
+                      </td>
+                      <td>
+                        <div className={styles.actions}>
+                          <button className={styles.actionBtn} title="Edit Activity" onClick={() => navigate(`/admin/edit/${activity.id}`)}>
+                            <Edit size={16} />
+                          </button>
+                          <button className={`${styles.actionBtn} ${styles.delete}`} title="Delete" onClick={() => setDeleteTarget({ id: activity.id, title: activity.title, type: 'activity' })}>
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </motion.tr>
+                  ))}
+                  {filteredActivities.length === 0 && (
+                    <tr><td colSpan={5} style={{ textAlign: 'center', padding: '3rem', color: 'rgba(255,255,255,0.3)' }}>No matching records.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            ) : (
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Event Details</th>
+                    <th>Date</th>
+                    <th>Deadline</th>
+                    <th>Eligibility</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredEvents.map((event) => (
+                    <motion.tr 
+                      key={event.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      <td>
+                        <div className={styles.activityInfo}>
+                          <img 
+                            src={event.image || 'https://via.placeholder.com/80?text=No+Img'} 
+                            alt="" 
+                            className={styles.thumbnail}
+                          />
+                          <div className={styles.infoText}>
+                            <span className={styles.infoTitle}>{event.title}</span>
+                            <span className={styles.infoDesc}>{event.companyName}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>{new Date(event.eventDate).toLocaleDateString()}</td>
+                      <td>{new Date(event.deadline).toLocaleDateString()}</td>
+                      <td style={{ fontSize: '0.85rem', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={event.eligibilityCriteria}>
+                        {event.eligibilityCriteria}
+                      </td>
+                      <td>
+                        <span className={`${styles.statusBadge} ${styles[event.status]}`}>
+                          <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor' }} />
+                          {event.status === 'published' ? 'Published' : event.status === 'draft' ? 'Draft' : 'Archived'}
+                        </span>
+                      </td>
+                      <td>
+                        <div className={styles.actions}>
+                          <button className={styles.actionBtn} title="Edit Event" onClick={() => navigate(`/admin/events/edit/${event.id}`)}>
+                            <Edit size={16} />
+                          </button>
+                          <button className={`${styles.actionBtn} ${styles.delete}`} title="Delete" onClick={() => setDeleteTarget({ id: event.id, title: event.title, type: 'event' })}>
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                      </td>
+                    </motion.tr>
+                  ))}
+                  {filteredEvents.length === 0 && (
+                    <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'rgba(255,255,255,0.3)' }}>No matching records.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
       </div>

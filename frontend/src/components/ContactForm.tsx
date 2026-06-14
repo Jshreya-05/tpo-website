@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { contactInfo } from '../data'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
+import { createRegistration, createContactSubmission } from '../services/api'
 import styles from './ContactForm.module.css'
 
 interface FormState {
@@ -19,19 +21,60 @@ const initialForm: FormState = {
 export default function ContactForm() {
   const [form, setForm] = useState<FormState>(initialForm)
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [ref, isVisible] = useIntersectionObserver({ threshold: 0.1 })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => {
-      setSubmitted(false)
+    if (!form.name || !form.email || !form.role) {
+      toast.error('Please fill in name, email, and role.')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const isStudent = form.role.includes('Student')
+      
+      if (isStudent) {
+        if (!form.phone || !form.org) {
+          toast.error('Phone number and Department are required for student registration.')
+          setSubmitting(false)
+          return
+        }
+        await createRegistration({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          branch: form.org,
+          year: form.role
+        })
+        toast.success('✓ Placement Registration Submitted!')
+      } else {
+        await createContactSubmission({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          role: form.role,
+          org: form.org,
+          message: form.message
+        })
+        toast.success('✓ Enquiry Submitted Successfully!')
+      }
+
+      setSubmitted(true)
       setForm(initialForm)
-    }, 4000)
+      setTimeout(() => {
+        setSubmitted(false)
+      }, 4000)
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Submission failed. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -174,9 +217,9 @@ export default function ContactForm() {
             <button
               type="submit"
               className={`${styles.submitBtn} ${submitted ? styles.submitted : ''}`}
-              disabled={submitted}
+              disabled={submitted || submitting}
             >
-              {submitted ? '✓ Registration Submitted!' : 'Submit Registration'}
+              {submitting ? 'Submitting...' : submitted ? '✓ Registration Submitted!' : 'Submit Registration'}
             </button>
           </form>
         </div>

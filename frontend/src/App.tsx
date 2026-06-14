@@ -22,6 +22,8 @@ import Dashboard from './pages/Admin/Dashboard'
 import ActivityForm from './pages/Admin/ActivityForm'
 import GalleryManager from './pages/Admin/GalleryManager'
 import About from './pages/About/About'
+import UpcomingEvents from './pages/UpcomingEvents/UpcomingEvents'
+import EventForm from './pages/Admin/EventForm'
 
 function ScrollToHash() {
   const { pathname, hash } = useLocation()
@@ -71,6 +73,7 @@ export default function App() {
       {/* Public Facing Web Portal */}
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
+      <Route path="/upcoming-events" element={<UpcomingEvents />} />
       
       {/* Secured Admin Authorization */}
       <Route path="/admin/login" element={<AdminLogin />} />
@@ -82,6 +85,8 @@ export default function App() {
           <Route path="/admin/gallery" element={<GalleryManager />} />
           <Route path="/admin/create" element={<ActivityForm />} />
           <Route path="/admin/edit/:id" element={<ActivityForm />} />
+          <Route path="/admin/events/create" element={<EventForm />} />
+          <Route path="/admin/events/edit/:id" element={<EventForm />} />
         </Route>
       </Route>
     </Routes>

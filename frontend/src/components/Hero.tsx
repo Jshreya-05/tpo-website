@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import styles from './Hero.module.css'
 
 const heroCards = [
@@ -6,7 +7,7 @@ const heroCards = [
   { icon: '💼', title: 'Corporate Collaborations', desc: 'TCS, Infosys, Wipro, Cognizant & more' },
   { icon: '🎓', title: 'Career Development Programs', desc: 'Full Stack, Data Science, Aptitude & Soft Skills' },
   { icon: '📊', title: 'Mock Interviews', desc: '200+ sessions by industry experts' },
-  { icon: '📅', title: 'Next Drive', desc: 'TCS Smart Hiring — April 12, 2025' },
+  { icon: '📅', title: 'Upcoming Events', desc: 'Exploe more Oppurtunities here', link: '/upcoming-events' },
 ]
 
 
@@ -35,7 +36,7 @@ export default function Hero() {
         <div className={styles.left}>
           <div className={`${styles.badge} fade-up ${mounted ? 'visible' : ''}`}>
             <span className={styles.dot} />
-            Sanjeev Patil · Training &amp; Placement Officer
+            Prof. Sanjeev Patil · Training &amp; Placement Officer
           </div>
 
           <h1 className={`${styles.title} fade-up stagger-1 ${mounted ? 'visible' : ''}`}>
@@ -99,19 +100,26 @@ export default function Hero() {
         {/* Right card grid */}
         <div className={styles.right}>
           <div className={styles.cardGrid}>
-            {heroCards.map((card, i) => (
-              <div
-                key={i}
-                className={`${styles.card} ${card.featured ? styles.cardFeatured : ''} fade-up ${mounted ? 'visible' : ''}`}
-                style={{ transitionDelay: `${0.3 + i * 0.1}s` }}
-              >
-                <div className={styles.cardIcon}>{card.icon}</div>
-                <div className={styles.cardContent}>
-                  <h4>{card.title}</h4>
-                  <p>{card.desc}</p>
-                </div>
-              </div>
-            ))}
+            {heroCards.map((card, i) => {
+              const isLink = !!card.link
+              const CardComponent = isLink ? Link : 'div'
+              const cardProps = isLink ? { to: card.link } : {}
+
+              return (
+                <CardComponent
+                  key={i}
+                  {...cardProps}
+                  className={`${styles.card} ${card.featured ? styles.cardFeatured : ''} ${isLink ? styles.cardLink : ''} fade-up ${mounted ? 'visible' : ''}`}
+                  style={{ transitionDelay: `${0.3 + i * 0.1}s` }}
+                >
+                  <div className={styles.cardIcon}>{card.icon}</div>
+                  <div className={styles.cardContent}>
+                    <h4>{card.title}</h4>
+                    <p>{card.desc}</p>
+                  </div>
+                </CardComponent>
+              )
+            })}
           </div>
         </div>
       </div>

@@ -11,14 +11,14 @@ export default function BrandLogo({ size = 44, showText = true, variant = 'dark'
     <div className={`${styles.brand} ${variant === 'light' ? styles.light : ''}`}>
       <img
         src="/sp-brand-logo.png"
-        alt="Sanjeev Patil"
+        alt="Prof. Sanjeev Patil"
         className={styles.logoImage}
         style={{ height: size }}
         loading="eager"
       />
       {showText && (
         <div className={styles.logoText}>
-          <strong>Sanjeev Patil</strong>
+          <strong>Prof. Sanjeev Patil</strong>
           <span>Training &amp; Placement Officer</span>
         </div>
       )}

@@ -1,4 +1,5 @@
 import Activity from '../models/Activity.js';
+import Event from '../models/Event.js';
 import { validateActivity } from '../validators/activityValidator.js';
 import { filePathToPublicUrl, resolveImageUrls } from '../utils/fileUrl.js';
 
@@ -180,11 +181,12 @@ export const getFeaturedActivities = async (req, res) => {
 // @access  Protected (Admin)
 export const getAdminAnalytics = async (req, res) => {
   try {
-    const [totalActivities, placementDrives, uniqueCompanies, latestYearCount] = await Promise.all([
+    const [totalActivities, placementDrives, uniqueCompanies, latestYearCount, upcomingEvents] = await Promise.all([
       Activity.countDocuments(),
       Activity.countDocuments({ category: 'Placement Drive' }),
       Activity.distinct('companyName'),
-      Activity.countDocuments({ year: new Date().getFullYear() })
+      Activity.countDocuments({ year: new Date().getFullYear() }),
+      Event.find({ status: 'published' }).sort({ eventDate: 1 }).limit(5).lean()
     ]);
 
     res.status(200).json({
@@ -193,7 +195,11 @@ export const getAdminAnalytics = async (req, res) => {
         totalActivities,
         totalPlacementDrives: placementDrives,
         totalCompanies: uniqueCompanies.filter(c => c).length,
-        latestYearCount
+        latestYearCount,
+        upcomingEvents: upcomingEvents.map(e => ({
+          ...e,
+          id: e._id.toString()
+        }))
       }
     });
   } catch (error) {

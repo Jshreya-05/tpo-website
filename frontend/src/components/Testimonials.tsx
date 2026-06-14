@@ -26,7 +26,7 @@ export default function Testimonials() {
               className={`${styles.card} fade-up ${isVisible ? 'visible' : ''} stagger-${(i % 6) + 1}`}
             >
               <span className={styles.quote}>"</span>
-              <p className={styles.text}>{t.text}</p>
+              <p className={`${styles.text} text-justify`}>{t.text}</p>
               <div className={styles.divider} />
               <div className={styles.author}>
                 <div className={styles.avatar}>{t.initials}</div>

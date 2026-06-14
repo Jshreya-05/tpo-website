@@ -1,0 +1,68 @@
+.container {
+  height: 38px;
+  background: linear-gradient(90deg, #071224 0%, #0c1e3f 50%, #071224 100%);
+  border-bottom: 1px solid rgba(200, 151, 58, 0.25);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 99;
+}
+
+.prefix {
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.05em;
+  z-index: 10;
+  box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+  flex-shrink: 0;
+}
+
+.marqueeTrack {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: marqueeLoop 25s linear infinite;
+  padding-left: 100%;
+}
+
+.marqueeTrack:hover {
+  animation-play-state: paused;
+}
+
+.headlineLink {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 4rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.headlineLink:hover {
+  color: var(--gold-light);
+}
+
+.icon {
+  color: var(--gold);
+}
+
+@keyframes marqueeLoop {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

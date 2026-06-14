@@ -190,9 +190,9 @@ export const resources: Resource[] = [
 // ─── Stats ─────────────────────────────────────────────────────────────────
 
 export const stats: StatItem[] = [
-  { id: 'placed', icon: '🎓', target: 1200, suffix: '+', prefix: '', label: 'Students Placed' },
-  { id: 'highest', icon: '💰', target: 25, suffix: ' LPA', prefix: '₹', label: 'Highest Package' },
-  { id: 'companies', icon: '🏢', target: 40, suffix: '+', prefix: '', label: 'Companies Visited' },
+  { id: 'placed', icon: '🎓', target: 3000, suffix: '+', prefix: '', label: 'Students Placed' },
+  { id: 'companies', icon: '🏢', target: 2100, suffix: '+', prefix: '', label: 'Companies Visited' },
+  { id: 'highest', icon: '💰', target: 18, suffix: ' LPA', prefix: '₹', label: 'Highest Package' },
   { id: 'rate', icon: '📈', target: 95, suffix: '%', prefix: '', label: 'Placement Rate' },
 ]
 

@@ -81,7 +81,7 @@ export default function FeaturedActivities() {
                   )}
                 </div>
                 <h3 className={styles.cardTitle}>{activity.title}</h3>
-                <p className={styles.description}>
+                <p className={`${styles.description} text-justify`}>
                   {activity.description.length > 120
                     ? `${activity.description.substring(0, 120)}...`
                     : activity.description}
