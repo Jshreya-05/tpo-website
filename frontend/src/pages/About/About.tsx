@@ -15,7 +15,6 @@ import {
   GraduationCap 
 } from 'lucide-react';
 import styles from './About.module.css';
-import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { contactInfo, responsibilities } from '../../data';
 
@@ -27,6 +26,39 @@ const responsibilityIcons: Record<string, any> = {
   mock: Users,
   collab: Handshake,
 };
+
+const placementActivities = [
+  {
+    icon: Building2,
+    title: 'Campus Placement Drives',
+    desc: 'Organizing on-campus and virtual recruitment drives with leading IT, core, and product companies throughout the academic year.',
+  },
+  {
+    icon: Briefcase,
+    title: 'Internship Programs',
+    desc: 'Facilitating summer and winter internships with industry partners to provide students with real-world corporate exposure.',
+  },
+  {
+    icon: Users,
+    title: 'Pre-Placement Talks',
+    desc: 'Conducting company-specific orientation sessions covering job profiles, selection processes, compensation structures, and growth paths.',
+  },
+  {
+    icon: Award,
+    title: 'Assessment & Selection Rounds',
+    desc: 'Coordinating aptitude tests, technical interviews, group discussions, and HR rounds with structured logistics and student support.',
+  },
+  {
+    icon: Globe,
+    title: 'Industry Visits & Seminars',
+    desc: 'Arranging factory visits, expert talks, and career seminars to bridge the gap between classroom learning and industry expectations.',
+  },
+  {
+    icon: GraduationCap,
+    title: 'Training & Skill Bootcamps',
+    desc: 'Running targeted training programs in aptitude, coding, communication, and domain-specific skills to maximize placement readiness.',
+  },
+];
 
 const initiatives = [
   {
@@ -83,7 +115,6 @@ export default function About() {
 
   return (
     <div className={styles.aboutPage}>
-      <Navbar />
       <div className={styles.bgGlow} />
 
       {/* Hero Banner Section */}
@@ -249,6 +280,42 @@ export default function About() {
                   </div>
                   <h4>{resp.title}</h4>
                   <p className={styles.paragraph}>{resp.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Placement Activities Section */}
+      <section className={styles.activitiesSection}>
+        <div className="section-inner">
+          <div className={styles.sectionHeader}>
+            <span className={styles.sectionLabel}>Engagement</span>
+            <h2 className={styles.sectionHeading}>Placement Activities</h2>
+            <p className={styles.sectionSubtitle}>
+              Comprehensive placement operations conducted by the TPO Cell to connect students with career opportunities.
+            </p>
+          </div>
+
+          <div className={styles.activitiesGrid}>
+            {placementActivities.map((activity, idx) => {
+              const Icon = activity.icon;
+              return (
+                <motion.div
+                  key={activity.title}
+                  className={`${styles.activityCard} premium-card`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.05 }}
+                  data-tilt
+                >
+                  <div className={styles.activityIcon}>
+                    <Icon size={22} />
+                  </div>
+                  <h4>{activity.title}</h4>
+                  <p className={styles.paragraph}>{activity.desc}</p>
                 </motion.div>
               );
             })}

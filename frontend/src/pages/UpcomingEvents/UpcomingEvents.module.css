@@ -68,6 +68,70 @@
   line-height: 1.6;
 }
 
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.searchWrap {
+  flex: 1;
+  min-width: 240px;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+  color: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+}
+
+.searchWrap input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--white);
+  font-size: 0.95rem;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.filterGroup select {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  color: var(--white);
+  font-size: 0.9rem;
+}
+
+.typeBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(10, 22, 40, 0.75);
+  color: var(--gold-light);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(200, 151, 58, 0.35);
+  backdrop-filter: blur(6px);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));

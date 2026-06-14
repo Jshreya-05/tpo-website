@@ -4,6 +4,15 @@ export const validateEvent = (data) => {
   const schema = Joi.object({
     title: Joi.string().required(),
     companyName: Joi.string().required(),
+    eventType: Joi.string().valid(
+      'Placement Drive',
+      'Internship',
+      'Workshop',
+      'Hackathon',
+      'Seminar',
+      'Industry Visit',
+      'Training Program'
+    ).default('Placement Drive'),
     description: Joi.string().required(),
     googleFormLink: Joi.string().allow('').optional(),
     registrationLink: Joi.string().allow('').optional(),

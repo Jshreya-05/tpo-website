@@ -15,14 +15,38 @@
   flex-shrink: 0;
 }
 
+.brandWrap {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.navLinkExternal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: auto;
+  transition: all 0.2s ease;
+}
+
+.navLinkExternal:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+}
+
 .logo {
   font-family: var(--font-head);
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 3rem;
+  margin-bottom: 1.25rem;
   color: var(--gold);
 }
 

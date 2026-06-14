@@ -497,6 +497,52 @@
   color: rgba(255, 255, 255, 0.68);
 }
 
+/* Placement Activities Section */
+.activitiesSection {
+  padding: 5rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+.activitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.activityCard {
+  background: linear-gradient(165deg, rgba(12, 30, 63, 0.85), rgba(7, 18, 39, 0.8));
+  border: 1px solid rgba(212, 167, 74, 0.18);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.activityIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(200, 151, 58, 0.15);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.activityCard h4 {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  color: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.activityCard .paragraph {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
 /* Responsive Styles */
 @media (max-width: 1080px) {
   .messageGrid {
@@ -511,7 +557,8 @@
   .responsibilitiesGrid,
   .initiativesGrid,
   .supportGrid,
-  .collabGrid {
+  .collabGrid,
+  .activitiesGrid {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -532,7 +579,8 @@
   .responsibilitiesGrid,
   .initiativesGrid,
   .supportGrid,
-  .collabGrid {
+  .collabGrid,
+  .activitiesGrid {
     grid-template-columns: 1fr;
   }
 }

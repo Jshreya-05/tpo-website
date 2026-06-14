@@ -17,7 +17,6 @@ export default function CustomCursor({ enabled }: CustomCursorProps) {
   const animationFrameId = useRef<number | null>(null);
 
   useEffect(() => {
-    // Detect mobile/tablet to disable custom cursor
     const checkDevice = () => {
       const mobileWidth = window.innerWidth <= 1024;
       const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -45,26 +44,25 @@ export default function CustomCursor({ enabled }: CustomCursorProps) {
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      
-      const isInteractive = target.closest('a, button, input, select, textarea, [role="button"], img, [data-tilt], [class*="card"], [class*="Card"]');
+
+      const isInteractive = target.closest(
+        'a, button, input, select, textarea, [role="button"], img, [data-tilt], .premium-card, .magnet-btn, .spotlight-image, [class*="card"], [class*="Card"]'
+      );
       setHovered(!!isInteractive);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseover', handleMouseOver);
 
-    // LERP animation loop
     const animate = () => {
-      // Smooth out ring transition using linear interpolation
-      ringX.current += (mouseX.current - ringX.current) * 0.15;
-      ringY.current += (mouseY.current - ringY.current) * 0.15;
+      ringX.current += (mouseX.current - ringX.current) * 0.12;
+      ringY.current += (mouseY.current - ringY.current) * 0.12;
 
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${mouseX.current}px, ${mouseY.current}px, 0)`;
       }
 
       if (ringRef.current) {
-        // 18px is half of 36px ring diameter to align perfectly on center
         const offset = hovered ? 26 : 18;
         ringRef.current.style.transform = `translate3d(${ringX.current - offset}px, ${ringY.current - offset}px, 0)`;
       }
@@ -88,13 +86,13 @@ export default function CustomCursor({ enabled }: CustomCursorProps) {
 
   return (
     <>
-      <div 
-        ref={dotRef} 
-        className={`${styles.cursorDot} ${hovered ? styles.cursorDotHovered : ''}`} 
+      <div
+        ref={dotRef}
+        className={`${styles.cursorDot} ${hovered ? styles.cursorDotHovered : ''}`}
       />
-      <div 
-        ref={ringRef} 
-        className={`${styles.cursorRing} ${hovered ? styles.cursorRingHovered : ''}`} 
+      <div
+        ref={ringRef}
+        className={`${styles.cursorRing} ${hovered ? styles.cursorRingHovered : ''}`}
       />
     </>
   );

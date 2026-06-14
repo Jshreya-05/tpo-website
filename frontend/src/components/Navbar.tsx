@@ -6,6 +6,7 @@ import styles from './Navbar.module.css'
 const navLinks = [
   { label: 'Home', href: '#hero' },
   { label: 'About Us', href: '/about', isRoute: true },
+  { label: 'Upcoming Events', href: '/upcoming-events', isRoute: true },
   { label: 'Programs', href: '#programs' },
   { label: 'Recruiters', href: '#companies' },
   { label: 'Gallery', href: '#gallery' },

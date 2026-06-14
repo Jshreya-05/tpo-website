@@ -85,7 +85,7 @@ export default function ContactForm() {
           <h2 className="section-title section-title--light">
             Connect with Our<br />Placement Cell
           </h2>
-          <p className="section-subtitle section-subtitle--light">
+          <p className={`section-subtitle section-subtitle--light text-justify`}>
             Whether you&apos;re a student, recruiter, or industry partner, we&apos;re here
             to help you navigate the placement process.
           </p>
@@ -104,73 +104,46 @@ export default function ContactForm() {
               <div className={styles.infoIcon}>📍</div>
               <div>
                 <h5>Address</h5>
-                <p>{contactInfo.address}</p>
+                <p className="text-justify">{contactInfo.address}</p>
               </div>
             </div>
+          </div>
 
-            <div className={styles.infoItem}>
-              <div className={styles.infoIcon}>📞</div>
-              <div>
-                <h5>Phone</h5>
-                <p>
-                  {contactInfo.phones.map((phone, index) => (
-                    <span key={phone}>
-                      {index > 0 && ' / '}
-                      <a href={`tel:${phone}`} className={styles.infoLink}>
-                        {phone}
-                      </a>
-                    </span>
-                  ))}
-                </p>
-                <p>
-                  Office:{' '}
-                  <a href="tel:02162230636" className={styles.infoLink}>
-                    {contactInfo.officePhone}
-                  </a>
-                </p>
-              </div>
+          <div className={styles.infoCards}>
+            <div className={styles.infoCard}>
+              <div className={styles.cardIcon}>📞</div>
+              <h5>Phone</h5>
+              {contactInfo.phones.map((phone) => (
+                <a key={phone} href={`tel:${phone}`} className={styles.infoLink}>{phone}</a>
+              ))}
             </div>
 
-            <div className={styles.infoItem}>
-              <div className={styles.infoIcon}>📧</div>
-              <div>
-                <h5>Email</h5>
-                <p>
-                  {contactInfo.emails.map((email, index) => (
-                    <span key={email}>
-                      {index > 0 && ' / '}
-                      <a href={`mailto:${email}`} className={styles.infoLink}>
-                        {email}
-                      </a>
-                    </span>
-                  ))}
-                </p>
-              </div>
+            <div className={styles.infoCard}>
+              <div className={styles.cardIcon}>📧</div>
+              <h5>Email</h5>
+              {contactInfo.emails.map((email) => (
+                <a key={email} href={`mailto:${email}`} className={styles.infoLink}>{email}</a>
+              ))}
             </div>
 
-            <div className={styles.infoItem}>
-              <div className={styles.infoIcon}>🌐</div>
-              <div>
-                <h5>Website</h5>
-                <p>
-                  <a
-                    href={contactInfo.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.infoLink}
-                  >
-                    www.kbpcoes.edu.in
-                  </a>
-                </p>
-              </div>
+            <div className={styles.infoCard}>
+              <div className={styles.cardIcon}>🌐</div>
+              <h5>Website</h5>
+              <a
+                href={contactInfo.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.infoLink}
+              >
+                www.kbpcoes.edu.in
+              </a>
             </div>
 
-            <div className={styles.infoItem}>
-              <div className={styles.infoIcon}>⏰</div>
-              <div>
-                <h5>Office Hours</h5>
-                <p>{contactInfo.officeHours}</p>
-              </div>
+            <div className={styles.infoCard}>
+              <div className={styles.cardIcon}>⏰</div>
+              <h5>Office Hours</h5>
+              <p>Monday – Saturday</p>
+              <p>10:00 AM – 5:00 PM</p>
             </div>
           </div>
         </div>

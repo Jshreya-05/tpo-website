@@ -1,21 +1,39 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Award, FileText, ExternalLink, Inbox } from 'lucide-react';
-import Navbar from '../../components/Navbar';
+import { Calendar, Clock, Award, ExternalLink, Inbox, Search, Filter } from 'lucide-react';
 import Footer from '../../components/Footer';
 import { fetchEvents } from '../../services/api';
 import type { UpcomingEvent } from '../../types/events';
 import styles from './UpcomingEvents.module.css';
 
+const EVENT_TYPES = [
+  'All',
+  'Placement Drive',
+  'Internship',
+  'Workshop',
+  'Hackathon',
+  'Seminar',
+  'Industry Visit',
+  'Training Program',
+];
+
 export default function UpcomingEvents() {
   const [events, setEvents] = useState<UpcomingEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [typeFilter, setTypeFilter] = useState('All');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'closed'>('all');
 
   useEffect(() => {
     window.scrollTo(0, 0);
     const loadEvents = async () => {
       try {
-        const res = await fetchEvents({ status: 'published' });
+        const res = await fetchEvents({
+          status: 'published',
+          limit: 100,
+          search: searchTerm || undefined,
+          eventType: typeFilter !== 'All' ? typeFilter : undefined,
+        });
         setEvents(res.data || []);
       } catch (err) {
         console.error('Failed to load upcoming events', err);
@@ -23,8 +41,10 @@ export default function UpcomingEvents() {
         setLoading(false);
       }
     };
-    loadEvents();
-  }, []);
+
+    const timer = window.setTimeout(loadEvents, 300);
+    return () => window.clearTimeout(timer);
+  }, [searchTerm, typeFilter]);
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString(undefined, {
@@ -39,9 +59,17 @@ export default function UpcomingEvents() {
     return new Date(deadlineStr).getTime() < new Date().getTime();
   };
 
+  const filteredEvents = useMemo(() => {
+    return events.filter((event) => {
+      const closed = isDeadlinePassed(event.deadline);
+      if (statusFilter === 'active') return !closed;
+      if (statusFilter === 'closed') return closed;
+      return true;
+    });
+  }, [events, statusFilter]);
+
   return (
     <div className={styles.page}>
-      <Navbar />
       <div className={styles.bgGlow} />
 
       <div className="section-inner">
@@ -53,13 +81,38 @@ export default function UpcomingEvents() {
           >
             <span className={styles.label}>Opportunity Knocks</span>
             <h1 className={styles.title}>
-              Upcoming <span className={styles.gold}>Events &amp; Drives</span>
+              Upcoming <span className={styles.gold}>Events</span>
             </h1>
-            <p className={styles.subtitle}>
-              Explore and register for upcoming campus placement drives, technical bootcamps, and career seminars.
+            <p className={`${styles.subtitle} text-justify`}>
+              Explore and register for upcoming campus placement drives, internships, technical bootcamps, and career seminars.
             </p>
           </motion.div>
         </header>
+
+        <div className={styles.toolbar}>
+          <div className={styles.searchWrap}>
+            <Search size={16} />
+            <input
+              type="text"
+              placeholder="Search by title, company, or description..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className={styles.filterGroup}>
+            <Filter size={16} />
+            <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+              {EVENT_TYPES.map((type) => (
+                <option key={type} value={type}>{type === 'All' ? 'All Types' : type}</option>
+              ))}
+            </select>
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}>
+              <option value="all">All Status</option>
+              <option value="active">Active</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
+        </div>
 
         {loading ? (
           <div className={styles.loader}>
@@ -68,7 +121,7 @@ export default function UpcomingEvents() {
           </div>
         ) : (
           <div className={styles.grid}>
-            {events.map((event, index) => {
+            {filteredEvents.map((event, index) => {
               const hasRegLink = !!event.registrationLink;
               const hasFormLink = !!event.googleFormLink;
               const closed = isDeadlinePassed(event.deadline);
@@ -76,20 +129,22 @@ export default function UpcomingEvents() {
               return (
                 <motion.article
                   key={event.id}
-                  className={styles.card}
+                  className={`${styles.card} premium-card`}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
+                  data-tilt
                 >
                   <div className={styles.imageContainer}>
                     {event.image ? (
-                      <img src={event.image} alt={event.title} className={styles.image} />
+                      <img src={event.image} alt={event.title} className={`${styles.image} spotlight-image`} />
                     ) : (
                       <div className={styles.imagePlaceholder}>
                         <Award className={styles.placeholderIcon} size={48} />
                         <span className={styles.placeholderText}>{event.companyName}</span>
                       </div>
                     )}
+                    <span className={styles.typeBadge}>{event.eventType || 'Event'}</span>
                     <span
                       className={styles.statusBadge}
                       style={{ background: closed ? '#ef4444' : '#10b981' }}
@@ -137,7 +192,7 @@ export default function UpcomingEvents() {
                           href={closed ? undefined : event.googleFormLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={styles.formBtn}
+                          className={`${styles.formBtn} magnet-btn`}
                           style={{
                             opacity: closed ? 0.5 : 1,
                             pointerEvents: closed ? 'none' : 'auto',
@@ -146,13 +201,13 @@ export default function UpcomingEvents() {
                           Google Form
                         </a>
                       )}
-                      
+
                       {hasRegLink ? (
                         <a
                           href={closed ? undefined : event.registrationLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={styles.applyBtn}
+                          className={`${styles.applyBtn} magnet-btn`}
                           style={{
                             opacity: closed ? 0.5 : 1,
                             pointerEvents: closed ? 'none' : 'auto',
@@ -161,18 +216,20 @@ export default function UpcomingEvents() {
                           Apply Link <ExternalLink size={14} />
                         </a>
                       ) : (
-                        <a
-                          href={closed ? undefined : event.googleFormLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.applyBtn}
-                          style={{
-                            opacity: closed ? 0.5 : 1,
-                            pointerEvents: closed ? 'none' : 'auto',
-                          }}
-                        >
-                          Apply Now
-                        </a>
+                        hasFormLink && (
+                          <a
+                            href={closed ? undefined : event.googleFormLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`${styles.applyBtn} magnet-btn`}
+                            style={{
+                              opacity: closed ? 0.5 : 1,
+                              pointerEvents: closed ? 'none' : 'auto',
+                            }}
+                          >
+                            Apply Now
+                          </a>
+                        )
                       )}
                     </div>
                   </div>
@@ -180,12 +237,12 @@ export default function UpcomingEvents() {
               );
             })}
 
-            {events.length === 0 && (
+            {filteredEvents.length === 0 && (
               <div className={styles.emptyState}>
                 <Inbox className={styles.emptyIcon} size={48} />
                 <h3>No Upcoming Events</h3>
-                <p style={{ marginTop: '0.5rem' }}>
-                  There are no scheduled training programs or placement drives at the moment. Please check back later.
+                <p style={{ marginTop: '0.5rem' }} className="text-justify">
+                  There are no scheduled training programs or events matching your filters. Please check back later.
                 </p>
               </div>
             )}

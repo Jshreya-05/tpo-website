@@ -9,9 +9,9 @@ export const contactInfo = {
   address: 'Near RTO Office, Sadar Bazar, Satara 415001',
   phones: ['9561232933', '9986414388'],
   officePhone: '02162-230636',
-  emails: ['tpo@kbpcoes.edu.in', 'tposanjeevpatil@gmail.com'],
+  emails: ['tposanjeevpatil@gmail.com', 'tpo@kbpcoes.edu.in'],
   website: 'https://www.kbpcoes.edu.in',
-  officeHours: 'Monday – Saturday, 9:00 AM – 5:00 PM',
+  officeHours: 'Monday – Saturday, 10:00 AM – 5:00 PM',
 }
 
 // ─── Programs ──────────────────────────────────────────────────────────────

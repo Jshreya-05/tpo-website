@@ -51,6 +51,50 @@
   text-decoration: underline;
 }
 
+.infoCards {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.infoCard {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.infoCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(200, 151, 58, 0.35);
+}
+
+.cardIcon {
+  font-size: 1.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.infoCard h5 {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.infoCard p,
+.infoCard a {
+  display: block;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  margin-bottom: 0.15rem;
+}
+
 /* Form card */
 .formCard {
   background: rgba(255,255,255,0.06);
@@ -137,4 +181,5 @@
   .section { padding: 4rem 1.25rem; }
   .formCard { padding: 22px; }
   .row { grid-template-columns: 1fr; }
+  .infoCards { grid-template-columns: 1fr; }
 }

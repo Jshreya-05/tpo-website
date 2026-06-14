@@ -12,6 +12,19 @@ const eventSchema = new mongoose.Schema(
       required: [true, 'Please add a company name'],
       trim: true
     },
+    eventType: {
+      type: String,
+      enum: [
+        'Placement Drive',
+        'Internship',
+        'Workshop',
+        'Hackathon',
+        'Seminar',
+        'Industry Visit',
+        'Training Program'
+      ],
+      default: 'Placement Drive'
+    },
     description: {
       type: String,
       required: [true, 'Description is required']

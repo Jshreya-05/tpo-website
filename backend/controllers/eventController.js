@@ -16,7 +16,7 @@ function formatEvent(event) {
 // @access  Public
 export const getEvents = async (req, res) => {
   try {
-    const { search, status, page = 1, limit = 10 } = req.query;
+    const { search, status, eventType, page = 1, limit = 10 } = req.query;
 
     let query = {};
 
@@ -34,6 +34,10 @@ export const getEvents = async (req, res) => {
         { companyName: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } }
       ];
+    }
+
+    if (eventType && eventType !== 'all') {
+      query.eventType = eventType;
     }
 
     const skip = (Number(page) - 1) * Number(limit);

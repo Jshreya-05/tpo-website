@@ -134,6 +134,7 @@ export const fetchEvents = async (params?: {
   limit?: number;
   search?: string;
   status?: string;
+  eventType?: string;
 }): Promise<EventResponse> => {
   const { data } = await apiClient.get<EventResponse>('/events', { params });
   return data;

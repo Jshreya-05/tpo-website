@@ -3,6 +3,7 @@ export interface UpcomingEvent {
   _id: string; // Mongoose default
   title: string;
   companyName: string;
+  eventType?: string;
   description: string;
   image: string;
   googleFormLink?: string;

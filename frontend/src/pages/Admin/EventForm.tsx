@@ -16,6 +16,7 @@ export default function EventForm() {
   // Form State
   const [title, setTitle] = useState('');
   const [companyName, setCompanyName] = useState('');
+  const [eventType, setEventType] = useState('Placement Drive');
   const [eventDate, setEventDate] = useState('');
   const [deadline, setDeadline] = useState('');
   const [eligibilityCriteria, setEligibilityCriteria] = useState('');
@@ -37,6 +38,7 @@ export default function EventForm() {
           const { data } = await fetchEventById(id);
           setTitle(data.title);
           setCompanyName(data.companyName || '');
+          setEventType(data.eventType || 'Placement Drive');
           setEventDate(new Date(data.eventDate).toISOString().split('T')[0]);
           setDeadline(new Date(data.deadline).toISOString().split('T')[0]);
           setEligibilityCriteria(data.eligibilityCriteria || '');
@@ -80,6 +82,7 @@ export default function EventForm() {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('companyName', companyName);
+    formData.append('eventType', eventType);
     formData.append('eventDate', eventDate);
     formData.append('deadline', deadline);
     formData.append('eligibilityCriteria', eligibilityCriteria);
@@ -103,7 +106,7 @@ export default function EventForm() {
         await createEvent(formData);
         toast.success('Event published!');
       }
-      navigate('/admin/dashboard');
+      navigate('/admin/events');
     } catch (err: any) {
       toast.error(err.response?.data?.message || 'Server error uploading event data');
     } finally {
@@ -120,7 +123,7 @@ export default function EventForm() {
           <h1 className={styles.title}>{isEditing ? 'Modify Upcoming Event' : 'Schedule New Event'}</h1>
           <p className={styles.subtitle}>Fill in details for upcoming recruitment drives or training events.</p>
         </div>
-        <Link to="/admin/dashboard" className={styles.backBtn}>
+        <Link to="/admin/events" className={styles.backBtn}>
           <ArrowLeft size={18} /> Back
         </Link>
       </header>
@@ -159,6 +162,26 @@ export default function EventForm() {
               required 
               placeholder="e.g. Tata Consultancy Services" 
             />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>
+              Event Type <span style={{ color: '#f43f5e' }}>*</span>
+            </label>
+            <select
+              className={styles.input}
+              value={eventType}
+              onChange={(e) => setEventType(e.target.value)}
+              required
+            >
+              <option value="Placement Drive">Placement Drive</option>
+              <option value="Internship">Internship</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Hackathon">Hackathon</option>
+              <option value="Seminar">Seminar</option>
+              <option value="Industry Visit">Industry Visit</option>
+              <option value="Training Program">Training Program</option>
+            </select>
           </div>
 
           <div className={styles.formGroup}>
@@ -292,7 +315,7 @@ export default function EventForm() {
         </div>
 
         <div className={styles.formFooter}>
-          <button type="button" className={styles.cancelBtn} onClick={() => navigate('/admin/dashboard')}>Cancel</button>
+          <button type="button" className={styles.cancelBtn} onClick={() => navigate('/admin/events')}>Cancel</button>
           <button type="submit" className={styles.submitBtn} disabled={submitting}>
             <Save size={18} /> {submitting ? 'Saving...' : (isEditing ? 'Save Changes' : 'Schedule Event')}
           </button>

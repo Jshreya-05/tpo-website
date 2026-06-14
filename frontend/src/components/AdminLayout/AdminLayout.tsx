@@ -1,7 +1,29 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LayoutDashboard, PlusCircle, Image as ImageIcon, LogOut, ShieldCheck, Home } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Image as ImageIcon,
+  MessageSquare,
+  CalendarDays,
+  Users,
+  Mail,
+  Settings,
+  LogOut,
+  Home,
+  ShieldCheck,
+} from 'lucide-react';
+import BrandLogo from '../BrandLogo';
 import styles from './AdminLayout.module.css';
+
+const navItems = [
+  { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/admin/gallery', icon: ImageIcon, label: 'Gallery' },
+  { to: '/admin/testimonials', icon: MessageSquare, label: 'Testimonials' },
+  { to: '/admin/events', icon: CalendarDays, label: 'Upcoming Events' },
+  { to: '/admin/registrations', icon: Users, label: 'Student Registrations' },
+  { to: '/admin/contacts', icon: Mail, label: 'Contact Submissions' },
+  { to: '/admin/settings', icon: Settings, label: 'Website Settings' },
+];
 
 export default function AdminLayout() {
   const { user, logout } = useAuth();
@@ -14,40 +36,33 @@ export default function AdminLayout() {
 
   return (
     <div className={styles.layout}>
-      {/* Sidebar Navigation */}
       <aside className={styles.sidebar}>
         <div className={styles.logo}>
-          <ShieldCheck size={28} />
-          <span>ADMIN</span>
+          <ShieldCheck size={24} />
+          <span>TPO Admin</span>
+        </div>
+
+        <div className={styles.brandWrap}>
+          <BrandLogo size={36} variant="light" />
         </div>
 
         <nav className={styles.nav}>
-          <NavLink
-            to="/admin/dashboard"
-            className={({ isActive }) => `${styles.navLink} ${isActive ? styles.activeLink : ''}`}
-          >
-            <LayoutDashboard size={20} />
-            <span>Dashboard</span>
-          </NavLink>
+          {navItems.map(({ to, icon: Icon, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === '/admin/dashboard'}
+              className={({ isActive }) =>
+                `${styles.navLink} ${isActive ? styles.activeLink : ''}`
+              }
+            >
+              <Icon size={18} />
+              <span>{label}</span>
+            </NavLink>
+          ))}
 
-          <NavLink
-            to="/admin/gallery"
-            className={({ isActive }) => `${styles.navLink} ${isActive ? styles.activeLink : ''}`}
-          >
-            <ImageIcon size={20} />
-            <span>Vault Manager</span>
-          </NavLink>
-
-          <NavLink
-            to="/admin/create"
-            className={({ isActive }) => `${styles.navLink} ${isActive ? styles.activeLink : ''}`}
-          >
-            <PlusCircle size={20} />
-            <span>Create Activity</span>
-          </NavLink>
-
-          <a href="/" target="_blank" rel="noreferrer" className={styles.navLink} style={{ marginTop: '2rem' }}>
-            <Home size={20} />
+          <a href="/" target="_blank" rel="noreferrer" className={styles.navLinkExternal}>
+            <Home size={18} />
             <span>View Live Site</span>
           </a>
         </nav>
@@ -55,15 +70,14 @@ export default function AdminLayout() {
         <div className={styles.userInfo}>
           <div className={styles.userDetails}>
             <span className={styles.userName}>{user?.name || 'Administrator'}</span>
-            <span className={styles.userRole}>Security Level: {user?.role || 'editor'}</span>
+            <span className={styles.userRole}>{user?.role || 'editor'}</span>
           </div>
-          <button className={styles.logoutBtn} onClick={handleLogout}>
+          <button type="button" className={styles.logoutBtn} onClick={handleLogout}>
             <LogOut size={16} /> Logout
           </button>
         </div>
       </aside>
 
-      {/* Main Workspace */}
       <main className={styles.mainContent}>
         <div className={styles.pageContent}>
           <Outlet />

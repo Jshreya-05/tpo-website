@@ -221,3 +221,44 @@ select optgroup {
   text-align: justify;
   text-justify: inter-word;
 }
+
+/* Custom cursor */
+body.custom-cursor-active,
+body.custom-cursor-active * {
+  cursor: none !important;
+}
+
+/* Disable animations when toggled off */
+body.animations-disabled .fade-up {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* Premium hover interactions */
+.premium-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.premium-card:hover {
+  transform: perspective(800px) rotateX(2deg) rotateY(-2deg) translateY(-4px);
+  box-shadow: 0 20px 40px rgba(10, 22, 40, 0.2);
+}
+
+.spotlight-image {
+  transition: filter 0.35s ease, transform 0.35s ease;
+}
+
+.spotlight-image:hover {
+  filter: brightness(1.08) contrast(1.05);
+  transform: scale(1.02);
+}
+
+.magnet-btn {
+  transition: transform 0.2s ease;
+}
+
+.magnet-btn:hover {
+  transform: scale(1.04);
+}
