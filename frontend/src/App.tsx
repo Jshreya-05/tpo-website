@@ -17,7 +17,7 @@ import { useSettings } from './context/SettingsContext'
 
 // Admin Views
 import AdminLogin from './pages/Admin/AdminLogin'
-import { ProtectedRoute } from './components/ProtectedRoute'
+import { AdminRoute, ProtectedRoute } from './components/ProtectedRoute'
 import AdminLayout from './components/AdminLayout/AdminLayout'
 import Dashboard from './pages/Admin/Dashboard'
 import ActivityForm from './pages/Admin/ActivityForm'
@@ -95,9 +95,11 @@ function AppShell() {
             <Route path="/admin/events/edit/:id" element={<EventForm />} />
             <Route path="/admin/registrations" element={<RegistrationsManager />} />
             <Route path="/admin/contacts" element={<ContactsManager />} />
-            <Route path="/admin/settings" element={<WebsiteSettings />} />
             <Route path="/admin/create" element={<ActivityForm />} />
             <Route path="/admin/edit/:id" element={<ActivityForm />} />
+            <Route element={<AdminRoute />}>
+              <Route path="/admin/settings" element={<WebsiteSettings />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

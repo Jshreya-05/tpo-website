@@ -13,6 +13,9 @@ export const protect = async (req, res, next) => {
       const decoded = jwt.verify(token, env.jwtSecret);
 
       req.user = await User.findById(decoded.id).select('-password');
+      if (!req.user) {
+        return res.status(401).json({ success: false, message: 'Not authorized, user no longer exists' });
+      }
       return next();
     } catch (error) {
       return res.status(401).json({ success: false, message: 'Not authorized, token failed' });

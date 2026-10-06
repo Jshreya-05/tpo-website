@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Plus, Edit, Trash2, X, MessageSquare, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../context/AuthContext';
 import { 
   fetchTestimonials, 
   createTestimonial, 
@@ -12,6 +13,8 @@ import type { TestimonialItem } from '../../types/testimonials';
 import styles from './TestimonialsManager.module.css';
 
 export default function TestimonialsManager() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const [testimonials, setTestimonials] = useState<TestimonialItem[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -165,9 +168,11 @@ export default function TestimonialsManager() {
                         <button className={styles.actionBtn} onClick={() => openEditModal(item)} title="Edit">
                           <Edit size={16} />
                         </button>
-                        <button className={`${styles.actionBtn} ${styles.delete}`} onClick={() => setDeleteTarget(item)} title="Delete">
-                          <Trash2 size={16} />
-                        </button>
+                        {isAdmin && (
+                          <button className={`${styles.actionBtn} ${styles.delete}`} onClick={() => setDeleteTarget(item)} title="Delete">
+                            <Trash2 size={16} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

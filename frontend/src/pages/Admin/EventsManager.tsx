@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Plus, Edit, Trash2, Search, CalendarDays, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../context/AuthContext';
 import { fetchEvents, deleteEvent } from '../../services/api';
 import type { UpcomingEvent } from '../../types/events';
 import styles from './EventsManager.module.css';
@@ -25,6 +26,8 @@ export default function EventsManager() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('All Types');
   const [deleteTarget, setDeleteTarget] = useState<UpcomingEvent | null>(null);
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const navigate = useNavigate();
 
   const loadData = async () => {
@@ -123,9 +126,11 @@ export default function EventsManager() {
                 <button type="button" onClick={() => navigate(`/admin/events/edit/${event.id || event._id}`)}>
                   <Edit size={16} /> Edit
                 </button>
-                <button type="button" className={styles.deleteBtn} onClick={() => setDeleteTarget(event)}>
-                  <Trash2 size={16} /> Delete
-                </button>
+                {isAdmin && (
+                  <button type="button" className={styles.deleteBtn} onClick={() => setDeleteTarget(event)}>
+                    <Trash2 size={16} /> Delete
+                  </button>
+                )}
               </div>
             </article>
           ))}

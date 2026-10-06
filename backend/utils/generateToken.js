@@ -3,7 +3,7 @@ import { env } from '../config/env.js';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, env.jwtSecret, {
-    expiresIn: '30d',
+    expiresIn: '7d',
   });
 };
 

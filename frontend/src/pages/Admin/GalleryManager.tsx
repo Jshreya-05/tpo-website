@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import imageCompression from 'browser-image-compression';
+import { useAuth } from '../../context/AuthContext';
 import { 
   uploadGalleryImages, 
   fetchGalleryImages, 
@@ -32,6 +33,8 @@ interface PreviewFile {
 }
 
 export default function GalleryManager() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
   // State for uploads
@@ -393,9 +396,11 @@ export default function GalleryManager() {
                     <span>{img.year}</span>
                   </div>
                 </div>
-                <button className={styles.imageDeleteBtn} onClick={() => handleDelete(img._id)}>
-                  <Trash2 size={16} />
-                </button>
+                {isAdmin && (
+                  <button className={styles.imageDeleteBtn} onClick={() => handleDelete(img._id)}>
+                    <Trash2 size={16} />
+                  </button>
+                )}
               </motion.div>
             ))}
             {galleryImages.length === 0 && (

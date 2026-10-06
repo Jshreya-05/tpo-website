@@ -28,10 +28,7 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      if (localStorage.getItem('userInfo')) {
-        localStorage.removeItem('userInfo');
-        window.location.href = '/admin/login';
-      }
+      window.dispatchEvent(new Event('auth:unauthorized'));
     }
     return Promise.reject(error);
   }
@@ -48,6 +45,11 @@ export interface LoginResponse {
 
 export const loginUser = async (email: string, password: string): Promise<LoginResponse> => {
   const { data } = await apiClient.post<LoginResponse>('/auth/login', { email, password });
+  return data;
+};
+
+export const getCurrentUser = async (): Promise<Omit<LoginResponse, 'token' | 'success'>> => {
+  const { data } = await apiClient.get('/auth/me');
   return data;
 };
 

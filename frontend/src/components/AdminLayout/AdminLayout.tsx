@@ -47,7 +47,9 @@ export default function AdminLayout() {
         </div>
 
         <nav className={styles.nav}>
-          {navItems.map(({ to, icon: Icon, label }) => (
+          {navItems
+            .filter(({ to }) => to !== '/admin/settings' || user?.role === 'admin')
+            .map(({ to, icon: Icon, label }) => (
             <NavLink
               key={to}
               to={to}

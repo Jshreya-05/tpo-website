@@ -1,6 +1,19 @@
 import User from '../models/User.js';
 import generateToken from '../utils/generateToken.js';
 
+// @desc    Get authenticated user
+// @route   GET /api/auth/me
+// @access  Private
+export const getCurrentUser = (req, res) => {
+  res.json({
+    success: true,
+    _id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+    role: req.user.role
+  });
+};
+
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
 // @access  Public
@@ -35,6 +48,11 @@ export const authUser = async (req, res, next) => {
 export const registerUser = async (req, res, next) => {
   try {
     const { name, email, password, role } = req.body;
+    const assignedRole = role === undefined ? 'editor' : role;
+
+    if (!['admin', 'editor'].includes(assignedRole)) {
+      return res.status(400).json({ success: false, message: 'Role must be admin or editor' });
+    }
 
     const userExists = await User.findOne({ email });
 
@@ -47,7 +65,7 @@ export const registerUser = async (req, res, next) => {
       name,
       email,
       password,
-      role: role || 'editor'
+      role: assignedRole
     });
 
     if (user) {

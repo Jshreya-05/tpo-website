@@ -14,7 +14,7 @@
 ```bash
 cd backend
 cp .env.example .env
-# Edit .env — set MONGO_URI, JWT_SECRET
+# Edit .env — set MONGO_URI, JWT_SECRET, and Cloudinary keys
 npm install
 npm run seed:admin    # first time only
 npm run dev           # or: npm start
@@ -52,6 +52,9 @@ Open `http://localhost:5173`. Admin login: `http://localhost:5173/admin/login`
 | `BACKEND_URL` | Yes (prod) | `https://tpo-website-631h.onrender.com` |
 | `FRONTEND_URL` | Yes (prod) | `https://tpo-website-seven.vercel.app` |
 | `NODE_ENV` | No | `production` |
+| `CLOUDINARY_CLOUD_NAME` | Yes (gallery) | from Cloudinary dashboard |
+| `CLOUDINARY_API_KEY` | Yes (gallery) | from Cloudinary dashboard |
+| `CLOUDINARY_API_SECRET` | Yes (gallery) | from Cloudinary dashboard |
 
 ### Frontend (Vercel dashboard)
 
@@ -74,6 +77,7 @@ Open `http://localhost:5173`. Admin login: `http://localhost:5173/admin/login`
 cd backend
 npm run seed:admin
 npm run migrate:gallery-urls   # if gallery URLs still use localhost
+npm run migrate:gallery-cloudinary   # copy local gallery files to Cloudinary
 ```
 
 ### MongoDB Atlas

@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { Search, Trash2, Mail, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../context/AuthContext';
 import { fetchContactSubmissions, deleteContactSubmission } from '../../services/api';
 import type { ContactSubmission } from '../../types/registrations';
 import styles from './ContactsManager.module.css';
 
 export default function ContactsManager() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const [contacts, setContacts] = useState<ContactSubmission[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -71,9 +74,11 @@ export default function ContactsManager() {
                   <h3>{contact.name}</h3>
                   <p>{contact.role}{contact.org ? ` · ${contact.org}` : ''}</p>
                 </div>
-                <button type="button" className={styles.deleteBtn} onClick={() => setDeleteTarget(contact)}>
-                  <Trash2 size={15} />
-                </button>
+                {isAdmin && (
+                  <button type="button" className={styles.deleteBtn} onClick={() => setDeleteTarget(contact)}>
+                    <Trash2 size={15} />
+                  </button>
+                )}
               </div>
               <div className={styles.meta}>
                 <a href={`mailto:${contact.email}`}>{contact.email}</a>

@@ -16,6 +16,7 @@ import {
   fetchContactSubmissions,
   fetchTestimonials,
 } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import styles from './Dashboard.module.css';
 
 const modules = [
@@ -29,6 +30,7 @@ const modules = [
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [stats, setStats] = useState({
     gallery: 0,
     events: 0,
@@ -88,7 +90,9 @@ export default function Dashboard() {
       </div>
 
       <div className={styles.moduleGrid}>
-        {modules.map((mod) => {
+        {modules
+          .filter((mod) => mod.path !== '/admin/settings' || user?.role === 'admin')
+          .map((mod) => {
           const Icon = mod.icon;
           return (
             <button

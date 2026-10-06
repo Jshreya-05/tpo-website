@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Navigate, Link } from 'react-router-dom';
+import { useNavigate, Navigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Mail, ArrowRight, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { loginUser } from '../../services/api';
@@ -14,11 +14,20 @@ export default function AdminLogin() {
   const [error, setError] = useState('');
   
   const navigate = useNavigate();
-  const { user, login } = useAuth();
+  const { user, isLoading, login } = useAuth();
+  const location = useLocation();
+  const returnTo = location.state?.from;
+  const destination = returnTo
+    ? `${returnTo.pathname}${returnTo.search || ''}${returnTo.hash || ''}`
+    : '/admin/dashboard';
+
+  if (isLoading) {
+    return <div role="status" aria-live="polite">Checking your session...</div>;
+  }
 
   // If already logged in, redirect straight to dashboard
   if (user) {
-    return <Navigate to="/admin/dashboard" replace />;
+    return <Navigate to={destination} replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,7 +43,7 @@ export default function AdminLogin() {
       if (data.success) {
         login(data);
         toast.success(`Welcome back, ${data.name}!`);
-        navigate('/admin/dashboard', { replace: true });
+        navigate(destination, { replace: true });
       }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Invalid email or password');

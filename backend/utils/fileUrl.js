@@ -40,6 +40,10 @@ export function resolveImageUrl(imageUrl) {
     return imageUrl;
   }
 
+  if (/res\.cloudinary\.com|cloudinary\.com/i.test(imageUrl)) {
+    return imageUrl;
+  }
+
   const publicBase = getPublicBackendUrl();
 
   if (isLocalhostUrl(imageUrl)) {

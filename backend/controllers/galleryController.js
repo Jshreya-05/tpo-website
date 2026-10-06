@@ -1,11 +1,10 @@
 import Gallery from '../models/Gallery.js';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { filePathToPublicUrl, resolveImageUrl } from '../utils/fileUrl.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import {
+  destroyCloudinaryAsset,
+  destroyCloudinaryAssets,
+  getUploadedAssetMeta,
+} from '../config/cloudinary.js';
+import { resolveImageUrl } from '../utils/fileUrl.js';
 
 function formatGalleryItem(item) {
   const doc = item.toObject ? item.toObject() : item;
@@ -15,13 +14,17 @@ function formatGalleryItem(item) {
   };
 }
 
+function titleFromOriginalName(originalName = 'Image') {
+  return originalName.split('.')[0].replace(/[-_]/g, ' ').trim() || 'Image';
+}
+
 // @desc    Get all gallery images
 // @route   GET /api/gallery
 // @access  Public
 export const getGalleryImages = async (req, res) => {
   try {
     const { year, category, activityId, limit = 50, page = 1 } = req.query;
-    
+
     const query = {};
     if (year) query.year = year;
     if (category) query.category = category;
@@ -48,50 +51,65 @@ export const getGalleryImages = async (req, res) => {
   }
 };
 
-// @desc    Upload multiple gallery images
+// @desc    Upload multiple gallery images to Cloudinary
 // @route   POST /api/gallery
 // @access  Private/Admin/Editor
-export const uploadGalleryImages = async (req, res) => {
+export const uploadGalleryImages = async (req, res, next) => {
+  const uploadedAssets = (req.files || []).map((file) => ({
+    ...getUploadedAssetMeta(file),
+    originalname: file.originalname,
+  }));
+
   try {
-    if (!req.files || req.files.length === 0) {
+    if (uploadedAssets.length === 0) {
       return res.status(400).json({ success: false, message: 'Please upload at least one image' });
     }
 
-    const { year = new Date().getFullYear().toString(), activityId, category = 'General' } = req.body;
-    
-    // Process each uploaded file
-    const galleryItems = await Promise.all(
-      req.files.map(async (file) => {
-        // Generate title from filename if not provided
-        const originalName = file.originalname || 'Image';
-        const title = originalName.split('.')[0].replace(/[-_]/g, ' ');
+    const incomplete = uploadedAssets.filter((asset) => !asset.imageUrl || !asset.publicId);
+    if (incomplete.length > 0) {
+      await destroyCloudinaryAssets(uploadedAssets.map((asset) => asset.publicId));
+      return res.status(502).json({
+        success: false,
+        message: 'Cloudinary did not return a complete upload result. No gallery records were created.',
+      });
+    }
 
-        return await Gallery.create({
-          title,
+    const { year = new Date().getFullYear().toString(), activityId, category = 'General' } = req.body;
+    const created = [];
+
+    try {
+      for (const asset of uploadedAssets) {
+        const item = await Gallery.create({
+          title: titleFromOriginalName(asset.originalname),
           year,
           category,
           activityId: activityId || undefined,
-          imageUrl: filePathToPublicUrl(file.path),
-          publicId: file.filename,
-          uploadedBy: req.user._id
+          imageUrl: asset.imageUrl,
+          publicId: asset.publicId,
+          uploadedBy: req.user._id,
         });
-      })
-    );
+        created.push(item);
+      }
+    } catch (error) {
+      await Promise.allSettled(created.map((item) => Gallery.deleteOne({ _id: item._id })));
+      await destroyCloudinaryAssets(uploadedAssets.map((asset) => asset.publicId));
+      throw error;
+    }
 
     res.status(201).json({
       success: true,
-      message: `${galleryItems.length} images successfully added to the vault.`,
-      data: galleryItems.map(formatGalleryItem)
+      message: `${created.length} images successfully added to the vault.`,
+      data: created.map(formatGalleryItem)
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };
 
 // @desc    Delete gallery image
 // @route   DELETE /api/gallery/:id
 // @access  Private/Admin
-export const deleteGalleryImage = async (req, res) => {
+export const deleteGalleryImage = async (req, res, next) => {
   try {
     const image = await Gallery.findById(req.params.id);
 
@@ -99,31 +117,16 @@ export const deleteGalleryImage = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Image not found' });
     }
 
-    // Ensure only Admins can delete
     if (req.user.role !== 'admin') {
       return res.status(403).json({ success: false, message: 'Administrative privileges required to purge assets' });
     }
 
-    // Delete local file from disk if present
-    try {
-      const imageUrl = image.imageUrl || '';
-      const uploadsIndex = imageUrl.indexOf('/uploads/');
-      if (uploadsIndex >= 0) {
-        const relativePath = imageUrl.slice(uploadsIndex + 1).replace(/\//g, path.sep);
-        const localPath = path.join(__dirname, '..', relativePath);
-        if (fs.existsSync(localPath)) fs.unlinkSync(localPath);
-      }
-    } catch (fileError) {
-      // Ignore file delete failures and still remove DB record.
-      console.error('Failed to remove local image file:', fileError.message);
-    }
-    
-    // Delete from MongoDB
+    await destroyCloudinaryAsset(image.publicId);
     await Gallery.deleteOne({ _id: image._id });
 
     res.json({ success: true, message: 'Visual asset permanently eradicated' });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    next(error);
   }
 };
 

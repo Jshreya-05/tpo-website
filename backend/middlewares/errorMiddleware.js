@@ -6,9 +6,12 @@ export const notFound = (req, res, next) => {
 };
 
 export const errorHandler = (err, req, res, next) => {
-  // If the error status is 200, set it to 500, else use existing status
-  let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  let statusCode = err.statusCode || (res.statusCode === 200 ? 500 : res.statusCode);
   let message = err.message;
+
+  if (err.name === 'MulterError') {
+    statusCode = err.statusCode || 400;
+  }
 
   // Check for Mongoose bad ObjectId
   if (err.name === 'CastError' && err.kind === 'ObjectId') {

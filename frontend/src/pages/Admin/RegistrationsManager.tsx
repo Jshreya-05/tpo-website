@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { Search, Trash2, Users, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../context/AuthContext';
 import { fetchRegistrations, deleteRegistration } from '../../services/api';
 import type { StudentRegistration } from '../../types/registrations';
 import styles from './RegistrationsManager.module.css';
 
 export default function RegistrationsManager() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const [registrations, setRegistrations] = useState<StudentRegistration[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -86,9 +89,11 @@ export default function RegistrationsManager() {
                   <td>{reg.year}</td>
                   <td>{new Date(reg.createdAt).toLocaleString('en-IN')}</td>
                   <td>
-                    <button type="button" className={styles.deleteBtn} onClick={() => setDeleteTarget(reg)}>
-                      <Trash2 size={15} />
-                    </button>
+                    {isAdmin && (
+                      <button type="button" className={styles.deleteBtn} onClick={() => setDeleteTarget(reg)}>
+                        <Trash2 size={15} />
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

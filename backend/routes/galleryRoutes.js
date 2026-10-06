@@ -6,15 +6,15 @@ import {
   getGalleryStats
 } from '../controllers/galleryController.js';
 import { protect, authorize } from '../middlewares/authMiddleware.js';
-import upload from '../middlewares/uploadMiddleware.js';
+import { uploadGalleryFiles } from '../middlewares/galleryUploadMiddleware.js';
 
 const router = express.Router();
 
 router.route('/')
   .get(getGalleryImages)
-  .post(protect, authorize('admin', 'editor'), upload.array('images', 20), uploadGalleryImages);
+  .post(protect, authorize('admin', 'editor'), uploadGalleryFiles, uploadGalleryImages);
 
-router.get('/stats', protect, getGalleryStats);
+router.get('/stats', protect, authorize('admin', 'editor'), getGalleryStats);
 
 router.route('/:id')
   .delete(protect, authorize('admin'), deleteGalleryImage); // Restrict deletion to Admin only
