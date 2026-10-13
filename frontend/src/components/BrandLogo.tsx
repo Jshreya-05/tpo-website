@@ -9,13 +9,14 @@ interface BrandLogoProps {
 export default function BrandLogo({ size = 44, showText = true, variant = 'dark' }: BrandLogoProps) {
   return (
     <div className={`${styles.brand} ${variant === 'light' ? styles.light : ''}`}>
-      <img
-        src="/sp-brand-logo.png"
-        alt="Prof. Sanjeev Patil"
-        className={styles.logoImage}
-        style={{ height: size }}
-        loading="eager"
-      />
+      <span className={styles.logoFrame} style={{ width: size, height: size }}>
+        <img
+          src="/sp-brand-logo.png"
+          alt="Prof. Sanjeev Patil"
+          className={styles.logoImage}
+          loading="eager"
+        />
+      </span>
       {showText && (
         <div className={styles.logoText}>
           <strong>Prof. Sanjeev Patil</strong>

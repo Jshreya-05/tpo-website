@@ -12,7 +12,7 @@ const navLinks = [
   { label: 'Gallery', href: '#gallery' },
   { label: 'Process', href: '#timeline' },
   { label: 'Resources', href: '#resources' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact Us', href: '#contact' },
 ]
 
 export default function Navbar() {
@@ -75,7 +75,7 @@ export default function Navbar() {
               ) : (
                 <a
                   href={isHome ? l.href : `/${l.href}`}
-                  className={l.label === 'Contact' ? styles.contactLink : undefined}
+                  className={l.label === 'Contact Us' ? styles.contactLink : undefined}
                   onClick={(e) => {
                     e.preventDefault()
                     handleNavClick(l.href)

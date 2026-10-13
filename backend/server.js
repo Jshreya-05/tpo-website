@@ -13,6 +13,7 @@ import registrationRoutes from './routes/registrationRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import testimonialRoutes from './routes/testimonialRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import programRoutes from './routes/programRoutes.js';
 import { notFound, errorHandler } from './middlewares/errorMiddleware.js';
 import { corsOptions } from './config/cors.js';
 import { env } from './config/env.js';
@@ -45,6 +46,7 @@ app.use('/api/registrations', registrationRoutes);
 app.use('/api/contacts', contactRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/gallery', galleryRoutes);
+app.use('/api/programs', programRoutes);
 app.use('/api/auth', authRoutes);
 
 app.get('/api/health', (req, res) => {

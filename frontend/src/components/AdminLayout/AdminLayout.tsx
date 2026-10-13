@@ -11,6 +11,7 @@ import {
   LogOut,
   Home,
   ShieldCheck,
+  GraduationCap,
 } from 'lucide-react';
 import BrandLogo from '../BrandLogo';
 import styles from './AdminLayout.module.css';
@@ -19,6 +20,7 @@ const navItems = [
   { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/admin/gallery', icon: ImageIcon, label: 'Gallery' },
   { to: '/admin/testimonials', icon: MessageSquare, label: 'Testimonials' },
+  { to: '/admin/programs', icon: GraduationCap, label: 'Programs' },
   { to: '/admin/events', icon: CalendarDays, label: 'Upcoming Events' },
   { to: '/admin/registrations', icon: Users, label: 'Student Registrations' },
   { to: '/admin/contacts', icon: Mail, label: 'Contact Submissions' },

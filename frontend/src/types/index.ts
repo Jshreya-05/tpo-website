@@ -1,21 +1,6 @@
 // ─── Program / Training Card ───────────────────────────────────────────────
 
-export interface Program {
-  id: string
-  title: string
-  shortDesc: string
-  tag: string
-  tagColor: string
-  tagTextColor: string
-  icon: string
-  gradient: string
-  students: number
-  duration: string
-  description: string
-  topics: string[]
-  benefits: string[]
-  url: string
-}
+export type { Program } from './programs'
 
 // ─── Testimonial ───────────────────────────────────────────────────────────
 

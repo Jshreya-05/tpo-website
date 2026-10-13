@@ -4,6 +4,7 @@ import type { EventResponse, SingleEventResponse } from '../types/events';
 import type { WebsiteSettings, SettingsResponse } from '../types/settings';
 import type { RegistrationsResponse, ContactSubmissionsResponse } from '../types/registrations';
 import type { TestimonialsResponse, SingleTestimonialResponse } from '../types/testimonials';
+import type { Program, ProgramResponse, SingleProgramResponse } from '../types/programs';
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
@@ -128,6 +129,48 @@ export const deleteGalleryImage = async (id: string) => {
 
 export const fetchGalleryStats = async () => {
   const { data } = await apiClient.get('/gallery/stats');
+  return data;
+};
+
+export const fetchPrograms = async (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+  department?: string;
+}): Promise<ProgramResponse> => {
+  const { data } = await apiClient.get<ProgramResponse>('/programs', { params });
+  return data;
+};
+
+export const fetchAdminPrograms = async (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+  department?: string;
+}): Promise<ProgramResponse> => {
+  const { data } = await apiClient.get<ProgramResponse>('/programs/admin/list', { params });
+  return data;
+};
+
+export const fetchProgramById = async (id: string): Promise<SingleProgramResponse> => {
+  const { data } = await apiClient.get<SingleProgramResponse>(`/programs/${id}`);
+  return data;
+};
+
+export const createProgram = async (programData: Partial<Program>) => {
+  const { data } = await apiClient.post('/programs/admin', programData);
+  return data;
+};
+
+export const updateProgram = async (id: string, programData: Partial<Program>) => {
+  const { data } = await apiClient.put(`/programs/admin/${id}`, programData);
+  return data;
+};
+
+export const deleteProgram = async (id: string) => {
+  const { data } = await apiClient.delete(`/programs/admin/${id}`);
   return data;
 };
 

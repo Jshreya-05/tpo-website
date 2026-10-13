@@ -4,13 +4,23 @@
   gap: 14px;
 }
 
-.logoImage {
-  height: auto;
-  width: auto;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: left center;
+.logoFrame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  border: 2px solid rgba(200, 151, 58, 0.55);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+.logoImage {
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .logoText {

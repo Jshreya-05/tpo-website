@@ -6,6 +6,7 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "seed:admin": "node seedAdmin.cjs",
+    "seed:programs": "node scripts/seed-programs.js",
     "migrate:gallery-urls": "node scripts/migrate-gallery-urls.js",
     "migrate:gallery-cloudinary": "node scripts/migrate-gallery-to-cloudinary.js",
     "test": "echo \"Error: no test specified\" && exit 1"

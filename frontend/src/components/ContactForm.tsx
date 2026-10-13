@@ -113,7 +113,10 @@ export default function ContactForm() {
             <div className={styles.infoCard}>
               <div className={styles.cardIcon}>📞</div>
               <h5>Phone</h5>
-              {contactInfo.phones.map((phone) => (
+              <a href={`tel:${contactInfo.phones[0]}`} className={styles.infoLink}>
+                Phone: {contactInfo.phones[0]}
+              </a>
+              {contactInfo.phones.slice(1).map((phone) => (
                 <a key={phone} href={`tel:${phone}`} className={styles.infoLink}>{phone}</a>
               ))}
             </div>

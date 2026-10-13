@@ -8,6 +8,7 @@ import {
   Mail,
   Settings,
   ArrowRight,
+  GraduationCap,
 } from 'lucide-react';
 import {
   fetchGalleryStats,
@@ -15,6 +16,7 @@ import {
   fetchRegistrations,
   fetchContactSubmissions,
   fetchTestimonials,
+  fetchAdminPrograms,
 } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import styles from './Dashboard.module.css';
@@ -22,6 +24,7 @@ import styles from './Dashboard.module.css';
 const modules = [
   { title: 'Gallery Management', desc: 'Upload and organize campus activity photos.', icon: ImageIcon, path: '/admin/gallery', color: '#3b82f6' },
   { title: 'Testimonials', desc: 'Manage alumni success stories.', icon: MessageSquare, path: '/admin/testimonials', color: '#8b5cf6' },
+  { title: 'Programs', desc: 'Manage training programs and departments.', icon: GraduationCap, path: '/admin/programs', color: '#6366f1' },
   { title: 'Upcoming Events', desc: 'Create drives, workshops, and seminars.', icon: CalendarDays, path: '/admin/events', color: '#10b981' },
   { title: 'Student Registrations', desc: 'View student placement registrations.', icon: Users, path: '/admin/registrations', color: '#f59e0b' },
   { title: 'Contact Submissions', desc: 'Review recruiter and enquiry forms.', icon: Mail, path: '/admin/contacts', color: '#ef4444' },
@@ -37,17 +40,19 @@ export default function Dashboard() {
     registrations: 0,
     contacts: 0,
     testimonials: 0,
+    programs: 0,
   });
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [galleryRes, eventsRes, regRes, contactRes, testRes] = await Promise.all([
+        const [galleryRes, eventsRes, regRes, contactRes, testRes, programRes] = await Promise.all([
           fetchGalleryStats(),
           fetchEvents({ status: 'all', limit: 1 }),
           fetchRegistrations({ limit: 1 }),
           fetchContactSubmissions({ limit: 1 }),
           fetchTestimonials(),
+          fetchAdminPrograms({ status: 'all', limit: 1 }),
         ]);
         setStats({
           gallery: galleryRes.data?.totalImages || 0,
@@ -55,6 +60,7 @@ export default function Dashboard() {
           registrations: regRes.total || 0,
           contacts: contactRes.total || 0,
           testimonials: testRes.data?.length || 0,
+          programs: programRes.total || 0,
         });
       } catch {
         /* keep defaults */
@@ -64,6 +70,7 @@ export default function Dashboard() {
   }, []);
 
   const statCards = [
+    { label: 'Programs', value: stats.programs },
     { label: 'Gallery Images', value: stats.gallery },
     { label: 'Upcoming Events', value: stats.events },
     { label: 'Registrations', value: stats.registrations },

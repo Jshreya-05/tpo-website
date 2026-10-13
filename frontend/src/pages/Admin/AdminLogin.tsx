@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Navigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Lock, Mail, ArrowRight, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { Lock, Mail, ArrowRight, ArrowLeft } from 'lucide-react';
 import { loginUser } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
+import BrandLogo from '../../components/BrandLogo';
 import styles from './AdminLogin.module.css';
 import toast from 'react-hot-toast';
 
@@ -63,7 +64,7 @@ export default function AdminLogin() {
       >
         <div className={styles.header}>
           <div className={styles.logo}>
-            <ShieldCheck size={32} color="var(--gold)" />
+            <BrandLogo size={56} showText={false} variant="light" />
             TPO <span>Secure</span>
           </div>
           <p className={styles.subtitle}>Admin & Editor Workplace Authorization</p>

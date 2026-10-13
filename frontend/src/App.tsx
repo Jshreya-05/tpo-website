@@ -30,6 +30,8 @@ import WebsiteSettings from './pages/Admin/WebsiteSettings'
 import RegistrationsManager from './pages/Admin/RegistrationsManager'
 import ContactsManager from './pages/Admin/ContactsManager'
 import EventsManager from './pages/Admin/EventsManager'
+import ProgramsManager from './pages/Admin/ProgramsManager'
+import ProgramForm from './pages/Admin/ProgramForm'
 
 function ScrollToHash() {
   const { pathname, hash } = useLocation()
@@ -93,6 +95,9 @@ function AppShell() {
             <Route path="/admin/events" element={<EventsManager />} />
             <Route path="/admin/events/create" element={<EventForm />} />
             <Route path="/admin/events/edit/:id" element={<EventForm />} />
+            <Route path="/admin/programs" element={<ProgramsManager />} />
+            <Route path="/admin/programs/create" element={<ProgramForm />} />
+            <Route path="/admin/programs/edit/:id" element={<ProgramForm />} />
             <Route path="/admin/registrations" element={<RegistrationsManager />} />
             <Route path="/admin/contacts" element={<ContactsManager />} />
             <Route path="/admin/create" element={<ActivityForm />} />

@@ -26,7 +26,7 @@ interface TrainingCardProps {
 }
 
 export default function TrainingCard({ program, animClass = '' }: TrainingCardProps) {
-  const Icon = programIcons[program.id] || Code2
+  const Icon = programIcons[program.slug] || programIcons[program.id || ''] || Code2
 
   return (
     <a

@@ -23,7 +23,7 @@ const footerLinks: Record<string, FooterLink[]> = {
     { label: 'T&P Brochure', href: '#resources' },
   ],
   Contact: [
-    { label: contactInfo.phones[0], href: `tel:${contactInfo.phones[0]}` },
+    { label: `Phone: ${contactInfo.phones[0]}`, href: `tel:${contactInfo.phones[0]}` },
     { label: contactInfo.phones[1], href: `tel:${contactInfo.phones[1]}` },
     { label: contactInfo.officePhone, href: 'tel:02162230636' },
     { label: contactInfo.emails[0], href: `mailto:${contactInfo.emails[0]}` },
