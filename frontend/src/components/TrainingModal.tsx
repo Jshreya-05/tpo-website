@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import type { Program } from '../types'
+import { getDepartmentLabel } from '../constants/departments'
 import styles from './TrainingModal.module.css'
 
 interface TrainingModalProps {
@@ -56,8 +57,13 @@ export default function TrainingModal({ program, onClose }: TrainingModalProps) 
 
         {/* Footer meta */}
         <div className={styles.metaBar}>
+          {program.department && (
+            <span className={styles.metaItem}>Department: <strong>{getDepartmentLabel(program.department)}</strong></span>
+          )}
           <span className={styles.metaItem}>⏱ Duration: <strong>{program.duration}</strong></span>
-          <span className={styles.metaItem}>👥 {program.students}+ enrolled</span>
+          {program.students > 0 && (
+            <span className={styles.metaItem}>👥 {program.students}+ enrolled</span>
+          )}
           <span
             className={styles.tag}
             style={{ background: program.tagColor, color: program.tagTextColor }}

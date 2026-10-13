@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import TrainingCard from './TrainingCard'
+import TrainingModal from './TrainingModal'
 import { fetchPrograms } from '../services/api'
 import { PROGRAM_DEPARTMENTS } from '../constants/departments'
 import type { Program } from '../types/programs'
@@ -10,6 +11,7 @@ export default function Programs() {
   const [ref, isVisible] = useIntersectionObserver({ threshold: 0.1 })
   const [department, setDepartment] = useState('all')
   const [programs, setPrograms] = useState<Program[]>([])
+  const [selectedProgram, setSelectedProgram] = useState<Program | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -87,12 +89,14 @@ export default function Programs() {
               <TrainingCard
                 key={p.id || p._id || p.slug}
                 program={p}
+                onSelect={setSelectedProgram}
                 animClass={`fade-up ${isVisible ? 'visible' : ''} stagger-${(i % 6) + 1}`}
               />
             ))}
           </div>
         )}
       </div>
+      <TrainingModal program={selectedProgram} onClose={() => setSelectedProgram(null)} />
     </section>
   )
 }

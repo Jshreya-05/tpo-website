@@ -3,11 +3,9 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
   display: flex;
   flex-direction: column;
-  text-decoration: none;
   color: inherit;
 }
 
@@ -15,11 +13,6 @@
   transform: translateY(-6px);
   box-shadow: var(--shadow-lg);
   border-color: rgba(200, 151, 58, 0.3);
-}
-
-.card:focus-visible {
-  outline: 2px solid var(--blue);
-  outline-offset: 2px;
 }
 
 /* Image area */
@@ -33,6 +26,11 @@
 .imageIcon {
   color: rgba(255, 255, 255, 0.92);
   opacity: 0.95;
+}
+
+.programIcon {
+  font-size: 44px;
+  line-height: 1;
 }
 
 /* Body */
@@ -63,6 +61,7 @@
   display: flex; gap: 14px; align-items: center;
   padding-top: 14px; border-top: 1px solid var(--border);
   flex-wrap: wrap;
+  margin-bottom: 16px;
 }
 
 .metaItem {
@@ -71,10 +70,39 @@
 }
 
 .cta {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
   display: flex; align-items: center; gap: 6px;
   font-size: 13px; font-weight: 600; color: var(--blue);
-  margin-left: auto;
-  transition: gap 0.2s;
+  transition: color 0.2s;
 }
 
-.card:hover .cta { gap: 10px; }
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.cta:hover,
+.externalLink:hover {
+  color: var(--gold);
+}
+
+.cta:focus-visible,
+.externalLink:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.externalLink {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--blue);
+  text-decoration: none;
+  transition: color 0.2s;
+}
