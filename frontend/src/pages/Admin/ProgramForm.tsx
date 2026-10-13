@@ -25,6 +25,12 @@ const emptyForm = {
   status: 'published' as 'draft' | 'published',
 };
 
+const parseListField = (value: string) =>
+  value
+    .split(/\n|,/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
 export default function ProgramForm() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -90,8 +96,8 @@ export default function ProgramForm() {
       tagTextColor: form.tagTextColor,
       icon: form.icon,
       gradient: form.gradient,
-      topics: form.topics,
-      benefits: form.benefits,
+      topics: parseListField(form.topics),
+      benefits: parseListField(form.benefits),
       department: form.department,
       status: form.status,
     };
