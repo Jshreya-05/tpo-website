@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { ShieldCheck } from 'lucide-react'
 import BrandLogo from './BrandLogo'
 import styles from './Navbar.module.css'
 
@@ -86,6 +87,16 @@ export default function Navbar() {
               )}
             </li>
           ))}
+          <li>
+            <Link
+              to="/admin/login"
+              className={styles.adminLogin}
+              onClick={() => setMenuOpen(false)}
+            >
+              <ShieldCheck size={16} aria-hidden="true" />
+              Admin Login
+            </Link>
+          </li>
         </ul>
 
         <button

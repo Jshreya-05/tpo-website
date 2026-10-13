@@ -48,6 +48,31 @@
 
 .links a:hover { color: var(--white); background: rgba(255, 255, 255, 0.08); }
 
+.links .adminLogin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-left: 8px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  color: var(--gold-light);
+  font-weight: 500;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.links .adminLogin:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--gold-light);
+}
+
+.links .adminLogin:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 3px;
+}
+
 /* Mobile hamburger */
 .toggle {
   display: none;
@@ -83,4 +108,10 @@
   .linksOpen { display: flex; }
 
   .links a { padding: 10px 16px; border-radius: 8px; }
+
+  .links .adminLogin {
+    justify-content: flex-start;
+    margin: 4px 0 0;
+    padding: 10px 16px;
+  }
 }
