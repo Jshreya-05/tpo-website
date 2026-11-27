@@ -65,7 +65,7 @@ export const resources: Resource[] = [
   { icon: '🎯', title: 'Technical Interview Question Bank', desc: 'Branch-wise technical interview questions and coding interview preparation references suggested by TPO.', badge: 'Question Repository', bg: '#EDE9FE', path: 'https://www.geeksforgeeks.org/technical-interview-questions/' },
   { icon: '🗣️', title: 'HR Interview Guide', desc: 'Comprehensive HR interview question resources shared by the Training and Placement Officer for final preparation.', badge: 'Interview Guide', bg: '#FEF3C7', path: 'https://www.interviewbit.com/hr-interview-questions/' },
   { icon: '💻', title: 'Coding Preparation Track', desc: 'TPO-curated coding practice sheets and DSA learning path to improve company round performance.', badge: 'Coding Practice', bg: '#FFE4E6', path: 'https://www.geeksforgeeks.org/dsa-sheet-by-love-babbar/' },
-  { icon: '📅', title: 'TPO Activity Gallery', desc: 'Official gallery of training sessions, workshops, and placement drives conducted under the TPO Cell.', badge: 'Campus Gallery', bg: '#CFFAFE', path: '#gallery' },
+  { icon: '💬', title: 'Soft Skills', desc: 'Develop essential professional skills to prepare for your career. Improve communication, interpersonal skills, teamwork and workplace confidence through free online learning.', badge: 'Free Online Course', bg: '#CFFAFE', path: 'https://www.open.edu/openlearn/money-business/effective-communication-the-workplace/content-section-overview' },
 ]
 
 // ─── Stats ─────────────────────────────────────────────────────────────────

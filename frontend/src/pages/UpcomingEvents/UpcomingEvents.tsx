@@ -81,7 +81,7 @@ export default function UpcomingEvents() {
           >
             <span className={styles.label}>Opportunity Knocks</span>
             <h1 className={styles.title}>
-              Upcoming <span className={styles.gold}>Events</span>
+              Upcoming <span className={styles.gold}>Drives</span>
             </h1>
             <p className={`${styles.subtitle} text-justify`}>
               Explore and register for upcoming campus placement drives, internships, technical bootcamps, and career seminars.
@@ -240,7 +240,7 @@ export default function UpcomingEvents() {
             {filteredEvents.length === 0 && (
               <div className={styles.emptyState}>
                 <Inbox className={styles.emptyIcon} size={48} />
-                <h3>No Upcoming Events</h3>
+                <h3>No Upcoming Drives</h3>
                 <p style={{ marginTop: '0.5rem' }} className="text-justify">
                   There are no scheduled training programs or events matching your filters. Please check back later.
                 </p>
